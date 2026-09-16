@@ -31,6 +31,13 @@ async function loadCases() {
     );
 
     const cases = await response.json();
+    if (!response.ok) {
+    document.getElementById("cases").innerHTML =
+        "<p>Unable to load cases. Supabase returned an error.</p><pre>" +
+        JSON.stringify(cases, null, 2) +
+        "</pre>";
+    return;
+}
 
     let html = "<h2>Legal Cases</h2>";
 
