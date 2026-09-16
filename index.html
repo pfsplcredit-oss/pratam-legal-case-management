@@ -3,14 +3,58 @@
 <head>
     <title>Pratam Legal Case Management System</title>
 </head>
+
 <body>
 
     <h1>Pratam Finserv</h1>
     <h2>Legal Case Management System</h2>
 
-    <p>Welcome to the Legal Case Management System.</p>
+    <button onclick="loadCases()">View Legal Cases</button>
 
-    <button>View Legal Cases</button>
+    <div id="cases"></div>
+
+<script>
+
+const SUPABASE_URL = "https://tawykarkhepvtaxnxxjd.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhd3lrYXJraGVwdnRheG54eGpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NTIzMDIsImV4cCI6MjEwNTAyODMwMn0.nKvvX34Cl1pWfBY_Aljw7WTDKiQzECVt_6k1tldwn4c";
+
+async function loadCases() {
+
+    const response = await fetch(
+        SUPABASE_URL + "/rest/v1/legal_cases?select=*",
+        {
+            headers: {
+                "apikey": SUPABASE_KEY,
+                "Authorization": "Bearer " + SUPABASE_KEY
+            }
+        }
+    );
+
+    const cases = await response.json();
+
+    let html = "<h2>Legal Cases</h2>";
+
+    cases.forEach(function(caseData) {
+
+        html += `
+            <hr>
+            <p><strong>Branch:</strong> ${caseData.branch || ""}</p>
+            <p><strong>Loan No:</strong> ${caseData.loan_no || ""}</p>
+            <p><strong>First Party:</strong> ${caseData.first_party || ""}</p>
+            <p><strong>Second Party:</strong> ${caseData.second_party || ""}</p>
+            <p><strong>Case No:</strong> ${caseData.case_no || ""}</p>
+            <p><strong>CNR Number:</strong> ${caseData.cnr_number || ""}</p>
+            <p><strong>Court:</strong> ${caseData.court_name || ""}</p>
+            <p><strong>Advocate:</strong> ${caseData.advocate || ""}</p>
+            <p><strong>Status:</strong> ${caseData.current_status || ""}</p>
+        `;
+
+    });
+
+    document.getElementById("cases").innerHTML = html;
+}
+
+</script>
 
 </body>
 </html>
