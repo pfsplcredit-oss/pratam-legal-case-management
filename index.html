@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
     <title>Pratam Legal Case Management System</title>
@@ -20,7 +21,6 @@
 
         .header h1 {
             margin: 0;
-            font-size: 26px;
         }
 
         .header p {
@@ -31,20 +31,34 @@
             padding: 20px;
         }
 
-        #login {
-            width: 350px;
-            margin: 80px auto;
+        .search-panel {
             background: white;
-            padding: 30px;
+            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
 
-        #login input {
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .filter-box label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .filter-box input,
+        .filter-box select {
             width: 100%;
-            padding: 10px;
+            padding: 9px;
             box-sizing: border-box;
-            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
         button {
@@ -52,7 +66,7 @@
             color: white;
             border: none;
             padding: 10px 16px;
-            margin: 5px;
+            margin: 5px 5px 5px 0;
             border-radius: 4px;
             cursor: pointer;
         }
@@ -61,25 +75,11 @@
             background: #163a5c;
         }
 
-        .search-area {
-            background: white;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-        }
-
-        .search-area input {
-            width: 350px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
         .summary {
             background: white;
             padding: 15px;
-            margin-bottom: 15px;
             border-radius: 6px;
+            margin-bottom: 15px;
             font-weight: bold;
         }
 
@@ -93,7 +93,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1300px;
+            min-width: 1800px;
         }
 
         th {
@@ -114,92 +114,345 @@
             background: #f1f5f9;
         }
 
-        .status-open {
-            font-weight: bold;
+        #login {
+            width: 350px;
+            margin: 80px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .status-closed {
-            font-weight: bold;
+        #login input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
         }
 
         .no-data {
+            background: white;
             padding: 20px;
             text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .filter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-    <div class="header">
-        <h1>Pratam Finserv</h1>
-        <p>Legal Case Management System</p>
+
+<div class="header">
+
+    <h1>Pratam Finserv</h1>
+
+    <p>Legal Case Management System</p>
+
+</div>
+
+
+<!-- LOGIN -->
+
+<div id="login">
+
+    <h2>Login</h2>
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Email"
+    >
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Password"
+    >
+
+    <button onclick="login()">Login</button>
+
+    <p id="loginMessage"></p>
+
+</div>
+
+
+<!-- SYSTEM -->
+
+<div id="system" style="display:none;">
+
+<div class="container">
+
+
+<!-- SEARCH AND FILTER PANEL -->
+
+<div class="search-panel">
+
+    <h2>Legal Case MIS</h2>
+
+
+    <div class="filter-box">
+
+        <label>Search All</label>
+
+        <input
+            type="text"
+            id="globalSearch"
+            placeholder="Loan No., Party, Case No., CNR..."
+        >
+
     </div>
 
 
-    <!-- LOGIN -->
-
-    <div id="login">
-
-        <h2>Login</h2>
-
-        <input
-            type="email"
-            id="email"
-            placeholder="Email"
-        >
-
-        <input
-            type="password"
-            id="password"
-            placeholder="Password"
-        >
-
-        <button onclick="login()">Login</button>
-
-        <p id="loginMessage"></p>
-
-    </div>
+    <div class="filter-grid">
 
 
-    <!-- MAIN SYSTEM -->
+        <div class="filter-box">
 
-    <div id="system" style="display:none;">
+            <label>Branch</label>
 
-        <div class="container">
+            <select id="branchFilter">
 
-            <div class="search-area">
+                <option value="">All Branches</option>
 
-                <h2>Legal Case MIS</h2>
-
-                <input
-                    type="text"
-                    id="searchBox"
-                    placeholder="Search Loan No., Party Name, Case No. or CNR"
-                >
-
-                <button onclick="searchCases()">
-                    Search
-                </button>
-
-                <button onclick="showAllCases()">
-                    Show All Cases
-                </button>
-
-                <button onclick="logout()">
-                    Logout
-                </button>
-
-            </div>
-
-
-            <div id="cases"></div>
+            </select>
 
         </div>
 
+
+        <div class="filter-box">
+
+            <label>Loan No.</label>
+
+            <input
+                type="text"
+                id="loanFilter"
+                placeholder="Enter Loan No."
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>First Party</label>
+
+            <input
+                type="text"
+                id="firstPartyFilter"
+                placeholder="Enter First Party"
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Second Party</label>
+
+            <input
+                type="text"
+                id="secondPartyFilter"
+                placeholder="Enter Second Party"
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Case No.</label>
+
+            <input
+                type="text"
+                id="caseNoFilter"
+                placeholder="Enter Case No."
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>CNR Number</label>
+
+            <input
+                type="text"
+                id="cnrFilter"
+                placeholder="Enter CNR"
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Court Name</label>
+
+            <input
+                type="text"
+                id="courtFilter"
+                placeholder="Enter Court"
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Advocate</label>
+
+            <input
+                type="text"
+                id="advocateFilter"
+                placeholder="Enter Advocate"
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Stage</label>
+
+            <select id="stageFilter">
+
+                <option value="">All Stages</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Current Status</label>
+
+            <select id="statusFilter">
+
+                <option value="">All Status</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Act</label>
+
+            <input
+                type="text"
+                id="actFilter"
+                placeholder="Enter Act"
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Section</label>
+
+            <input
+                type="text"
+                id="sectionFilter"
+                placeholder="Enter Section"
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Previous Date From</label>
+
+            <input
+                type="date"
+                id="previousFrom"
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Previous Date To</label>
+
+            <input
+                type="date"
+                id="previousTo"
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Next Date From</label>
+
+            <input
+                type="date"
+                id="nextFrom"
+            >
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Next Date To</label>
+
+            <input
+                type="date"
+                id="nextTo"
+            >
+
+        </div>
+
+
     </div>
+
+
+    <br>
+
+
+    <button onclick="applyFilters()">
+        Apply Filters
+    </button>
+
+
+    <button onclick="clearFilters()">
+        Clear Filters
+    </button>
+
+
+    <button onclick="showAllCases()">
+        Show All Cases
+    </button>
+
+
+    <button onclick="logout()">
+        Logout
+    </button>
+
+
+</div>
+
+
+<div id="cases"></div>
+
+
+</div>
+
+</div>
 
 
 <script>
@@ -213,13 +466,18 @@ const SUPABASE_KEY =
     "sb_publishable_UbXEMo3CGKj6LbSu98xfFg_rvf2-kn_";
 
 
+let allCases = [];
+
+
 
 /* LOGIN */
 
 async function login() {
 
+
     const email =
         document.getElementById("email").value;
+
 
     const password =
         document.getElementById("password").value;
@@ -269,93 +527,21 @@ async function login() {
     document.getElementById("login").style.display =
         "none";
 
+
     document.getElementById("system").style.display =
         "block";
 
 
-    showAllCases();
+    await showAllCases();
 
 }
 
 
 
-/* SEARCH CASE */
-
-async function searchCases() {
-
-    const searchText =
-        document.getElementById("searchBox").value.trim();
-
-
-    if (searchText === "") {
-
-        document.getElementById("cases").innerHTML =
-            "<div class='no-data'>Please enter something to search.</div>";
-
-        return;
-    }
-
-
-    const token =
-        localStorage.getItem("access_token");
-
-
-    const url =
-        SUPABASE_URL +
-        "/rest/v1/legal_cases" +
-        "?select=*" +
-        "&or=" +
-        "(loan_no.ilike.*" +
-        encodeURIComponent(searchText) +
-        "*,first_party.ilike.*" +
-        encodeURIComponent(searchText) +
-        "*,second_party.ilike.*" +
-        encodeURIComponent(searchText) +
-        "*,case_no.ilike.*" +
-        encodeURIComponent(searchText) +
-        "*,cnr_number.ilike.*" +
-        encodeURIComponent(searchText) +
-        ")";
-
-
-    const response =
-        await fetch(
-
-            url,
-
-            {
-                headers: {
-                    "apikey": SUPABASE_KEY,
-                    "Authorization":
-                        "Bearer " + token
-                }
-            }
-
-        );
-
-
-    const cases =
-        await response.json();
-
-
-    if (!response.ok) {
-
-        document.getElementById("cases").innerHTML =
-            "<div class='no-data'>Unable to search cases.</div>";
-
-        return;
-    }
-
-
-    displayCases(cases);
-
-}
-
-
-
-/* SHOW ALL CASES */
+/* LOAD ALL CASES */
 
 async function showAllCases() {
+
 
     const token =
         localStorage.getItem("access_token");
@@ -391,13 +577,438 @@ async function showAllCases() {
     }
 
 
-    displayCases(cases);
+    allCases = cases;
+
+
+    createFilterOptions();
+
+
+    displayCases(allCases);
 
 }
 
 
 
-/* DISPLAY CASES AS TABLE */
+/* CREATE DROPDOWN OPTIONS */
+
+function createFilterOptions() {
+
+
+    const branches =
+        [...new Set(
+            allCases
+                .map(c => c.branch)
+                .filter(Boolean)
+        )]
+        .sort();
+
+
+    const stages =
+        [...new Set(
+            allCases
+                .map(c => c.stage)
+                .filter(Boolean)
+        )]
+        .sort();
+
+
+    const statuses =
+        [...new Set(
+            allCases
+                .map(c => c.current_status)
+                .filter(Boolean)
+        )]
+        .sort();
+
+
+    const branchSelect =
+        document.getElementById("branchFilter");
+
+
+    const stageSelect =
+        document.getElementById("stageFilter");
+
+
+    const statusSelect =
+        document.getElementById("statusFilter");
+
+
+    branchSelect.innerHTML =
+        '<option value="">All Branches</option>';
+
+
+    stageSelect.innerHTML =
+        '<option value="">All Stages</option>';
+
+
+    statusSelect.innerHTML =
+        '<option value="">All Status</option>';
+
+
+    branches.forEach(function(branch) {
+
+        branchSelect.innerHTML +=
+            `<option value="${escapeHtml(branch)}">${escapeHtml(branch)}</option>`;
+
+    });
+
+
+    stages.forEach(function(stage) {
+
+        stageSelect.innerHTML +=
+            `<option value="${escapeHtml(stage)}">${escapeHtml(stage)}</option>`;
+
+    });
+
+
+    statuses.forEach(function(status) {
+
+        statusSelect.innerHTML +=
+            `<option value="${escapeHtml(status)}">${escapeHtml(status)}</option>`;
+
+    });
+
+}
+
+
+
+/* APPLY FILTERS */
+
+function applyFilters() {
+
+
+    const globalSearch =
+        document.getElementById("globalSearch")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const branch =
+        document.getElementById("branchFilter").value;
+
+
+    const loan =
+        document.getElementById("loanFilter")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const firstParty =
+        document.getElementById("firstPartyFilter")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const secondParty =
+        document.getElementById("secondPartyFilter")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const caseNo =
+        document.getElementById("caseNoFilter")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const cnr =
+        document.getElementById("cnrFilter")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const court =
+        document.getElementById("courtFilter")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const advocate =
+        document.getElementById("advocateFilter")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const stage =
+        document.getElementById("stageFilter").value;
+
+
+    const status =
+        document.getElementById("statusFilter").value;
+
+
+    const act =
+        document.getElementById("actFilter")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const section =
+        document.getElementById("sectionFilter")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const previousFrom =
+        document.getElementById("previousFrom").value;
+
+
+    const previousTo =
+        document.getElementById("previousTo").value;
+
+
+    const nextFrom =
+        document.getElementById("nextFrom").value;
+
+
+    const nextTo =
+        document.getElementById("nextTo").value;
+
+
+
+    const filtered =
+        allCases.filter(function(c) {
+
+
+        const searchableText = [
+
+            c.loan_no,
+            c.first_party,
+            c.second_party,
+            c.case_no,
+            c.cnr_number
+
+        ]
+        .join(" ")
+        .toLowerCase();
+
+
+        if (
+            globalSearch &&
+            !searchableText.includes(globalSearch)
+        ) {
+            return false;
+        }
+
+
+        if (
+            branch &&
+            c.branch !== branch
+        ) {
+            return false;
+        }
+
+
+        if (
+            loan &&
+            !String(c.loan_no || "")
+                .toLowerCase()
+                .includes(loan)
+        ) {
+            return false;
+        }
+
+
+        if (
+            firstParty &&
+            !String(c.first_party || "")
+                .toLowerCase()
+                .includes(firstParty)
+        ) {
+            return false;
+        }
+
+
+        if (
+            secondParty &&
+            !String(c.second_party || "")
+                .toLowerCase()
+                .includes(secondParty)
+        ) {
+            return false;
+        }
+
+
+        if (
+            caseNo &&
+            !String(c.case_no || "")
+                .toLowerCase()
+                .includes(caseNo)
+        ) {
+            return false;
+        }
+
+
+        if (
+            cnr &&
+            !String(c.cnr_number || "")
+                .toLowerCase()
+                .includes(cnr)
+        ) {
+            return false;
+        }
+
+
+        if (
+            court &&
+            !String(c.court_name || "")
+                .toLowerCase()
+                .includes(court)
+        ) {
+            return false;
+        }
+
+
+        if (
+            advocate &&
+            !String(c.advocate || "")
+                .toLowerCase()
+                .includes(advocate)
+        ) {
+            return false;
+        }
+
+
+        if (
+            stage &&
+            c.stage !== stage
+        ) {
+            return false;
+        }
+
+
+        if (
+            status &&
+            c.current_status !== status
+        ) {
+            return false;
+        }
+
+
+        if (
+            act &&
+            !String(c.act || "")
+                .toLowerCase()
+                .includes(act)
+        ) {
+            return false;
+        }
+
+
+        if (
+            section &&
+            !String(c.section || "")
+                .toLowerCase()
+                .includes(section)
+        ) {
+            return false;
+        }
+
+
+        if (
+            previousFrom &&
+            (!c.previous_date ||
+             c.previous_date < previousFrom)
+        ) {
+            return false;
+        }
+
+
+        if (
+            previousTo &&
+            (!c.previous_date ||
+             c.previous_date > previousTo)
+        ) {
+            return false;
+        }
+
+
+        if (
+            nextFrom &&
+            (!c.next_date ||
+             c.next_date < nextFrom)
+        ) {
+            return false;
+        }
+
+
+        if (
+            nextTo &&
+            (!c.next_date ||
+             c.next_date > nextTo)
+        ) {
+            return false;
+        }
+
+
+        return true;
+
+    });
+
+
+    displayCases(filtered);
+
+}
+
+
+
+/* CLEAR FILTERS */
+
+function clearFilters() {
+
+
+    document.getElementById("globalSearch").value = "";
+
+    document.getElementById("branchFilter").value = "";
+
+    document.getElementById("loanFilter").value = "";
+
+    document.getElementById("firstPartyFilter").value = "";
+
+    document.getElementById("secondPartyFilter").value = "";
+
+    document.getElementById("caseNoFilter").value = "";
+
+    document.getElementById("cnrFilter").value = "";
+
+    document.getElementById("courtFilter").value = "";
+
+    document.getElementById("advocateFilter").value = "";
+
+    document.getElementById("stageFilter").value = "";
+
+    document.getElementById("statusFilter").value = "";
+
+    document.getElementById("actFilter").value = "";
+
+    document.getElementById("sectionFilter").value = "";
+
+    document.getElementById("previousFrom").value = "";
+
+    document.getElementById("previousTo").value = "";
+
+    document.getElementById("nextFrom").value = "";
+
+    document.getElementById("nextTo").value = "";
+
+
+    displayCases(allCases);
+
+}
+
+
+
+/* DISPLAY TABLE */
 
 function displayCases(cases) {
 
@@ -415,8 +1026,7 @@ function displayCases(cases) {
 
         <div class="summary">
 
-            Total Cases Found:
-            ${cases.length}
+            Total Cases Found: ${cases.length}
 
         </div>
 
@@ -430,33 +1040,19 @@ function displayCases(cases) {
                 <tr>
 
                     <th>Sr. No.</th>
-
                     <th>Branch</th>
-
                     <th>Loan No.</th>
-
                     <th>First Party</th>
-
                     <th>Second Party</th>
-
                     <th>Case No.</th>
-
                     <th>CNR Number</th>
-
                     <th>Court Name</th>
-
                     <th>Advocate</th>
-
                     <th>Previous Date</th>
-
                     <th>Next Date</th>
-
                     <th>Stage</th>
-
                     <th>Current Status</th>
-
                     <th>Act</th>
-
                     <th>Section</th>
 
                 </tr>
@@ -467,7 +1063,7 @@ function displayCases(cases) {
     `;
 
 
-    cases.forEach(function(caseData, index) {
+    cases.forEach(function(c, index) {
 
 
         html += `
@@ -476,33 +1072,37 @@ function displayCases(cases) {
 
                 <td>${index + 1}</td>
 
-                <td>${caseData.branch || ""}</td>
+                <td>${escapeHtml(c.branch)}</td>
 
-                <td><strong>${caseData.loan_no || ""}</strong></td>
+                <td><strong>
+                    ${escapeHtml(c.loan_no)}
+                </strong></td>
 
-                <td>${caseData.first_party || ""}</td>
+                <td>${escapeHtml(c.first_party)}</td>
 
-                <td>${caseData.second_party || ""}</td>
+                <td>${escapeHtml(c.second_party)}</td>
 
-                <td>${caseData.case_no || ""}</td>
+                <td>${escapeHtml(c.case_no)}</td>
 
-                <td>${caseData.cnr_number || ""}</td>
+                <td>${escapeHtml(c.cnr_number)}</td>
 
-                <td>${caseData.court_name || ""}</td>
+                <td>${escapeHtml(c.court_name)}</td>
 
-                <td>${caseData.advocate || ""}</td>
+                <td>${escapeHtml(c.advocate)}</td>
 
-                <td>${caseData.previous_date || ""}</td>
+                <td>${escapeHtml(c.previous_date)}</td>
 
-                <td><strong>${caseData.next_date || ""}</strong></td>
+                <td><strong>
+                    ${escapeHtml(c.next_date)}
+                </strong></td>
 
-                <td>${caseData.stage || ""}</td>
+                <td>${escapeHtml(c.stage)}</td>
 
-                <td>${caseData.current_status || ""}</td>
+                <td>${escapeHtml(c.current_status)}</td>
 
-                <td>${caseData.act || ""}</td>
+                <td>${escapeHtml(c.act)}</td>
 
-                <td>${caseData.section || ""}</td>
+                <td>${escapeHtml(c.section)}</td>
 
             </tr>
 
@@ -529,20 +1129,36 @@ function displayCases(cases) {
 
 
 
+/* SECURITY / DISPLAY HELPER */
+
+function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
 /* LOGOUT */
 
 function logout() {
 
     localStorage.removeItem("access_token");
 
-
     document.getElementById("system").style.display =
         "none";
 
-
     document.getElementById("login").style.display =
         "block";
-
 
     document.getElementById("cases").innerHTML =
         "";
