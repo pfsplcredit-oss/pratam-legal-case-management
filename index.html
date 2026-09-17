@@ -24,10 +24,23 @@
     </div>
 
     <div id="system" style="display:none;">
-        <button onclick="loadCases()">View Legal Cases</button>
+
+        <h3>Search Case</h3>
+
+        <input
+            type="text"
+            id="searchBox"
+            placeholder="Enter Loan No., Party Name, Case No. or CNR"
+        >
+
+        <button onclick="searchCases()">Search</button>
+
+        <button onclick="showAllCases()">Show All Cases</button>
+
         <button onclick="logout()">Logout</button>
 
         <div id="cases"></div>
+
     </div>
 
 <script>
@@ -59,8 +72,10 @@ async function login() {
     const data = await response.json();
 
     if (!response.ok) {
+
         document.getElementById("loginMessage").innerText =
             "Login failed. Please check your email and password.";
+
         return;
     }
 
@@ -70,9 +85,65 @@ async function login() {
     document.getElementById("system").style.display = "block";
 
     document.getElementById("loginMessage").innerText = "";
+
+    showAllCases();
 }
 
-async function loadCases() {
+
+async function searchCases() {
+
+    const searchText =
+        document.getElementById("searchBox").value.trim();
+
+    if (searchText === "") {
+
+        document.getElementById("cases").innerHTML =
+            "<p>Please enter something to search.</p>";
+
+        return;
+    }
+
+    const token = localStorage.getItem("access_token");
+
+    const url =
+        SUPABASE_URL +
+        "/rest/v1/legal_cases" +
+        "?select=*" +
+        "&or=" +
+        "(loan_no.ilike.*" + encodeURIComponent(searchText) +
+        "*,first_party.ilike.*" + encodeURIComponent(searchText) +
+        "*,second_party.ilike.*" + encodeURIComponent(searchText) +
+        "*,case_no.ilike.*" + encodeURIComponent(searchText) +
+        "*,cnr_number.ilike.*" + encodeURIComponent(searchText) +
+        ")";
+
+    const response = await fetch(
+        url,
+        {
+            headers: {
+                "apikey": SUPABASE_KEY,
+                "Authorization": "Bearer " + token
+            }
+        }
+    );
+
+    const cases = await response.json();
+
+    if (!response.ok) {
+
+        document.getElementById("cases").innerHTML =
+            "<p>Unable to search cases.</p><pre>" +
+            JSON.stringify(cases, null, 2) +
+            "</pre>";
+
+        return;
+    }
+
+    displayCases(cases);
+}
+
+
+async function showAllCases() {
 
     const token = localStorage.getItem("access_token");
 
@@ -89,40 +160,88 @@ async function loadCases() {
     const cases = await response.json();
 
     if (!response.ok) {
+
         document.getElementById("cases").innerHTML =
             "<p>Unable to load cases.</p><pre>" +
             JSON.stringify(cases, null, 2) +
             "</pre>";
+
         return;
     }
 
-    let html = "<h2>Legal Cases</h2>";
+    displayCases(cases);
+}
+
+
+function displayCases(cases) {
+
+    if (cases.length === 0) {
+
+        document.getElementById("cases").innerHTML =
+            "<p>No matching cases found.</p>";
+
+        return;
+    }
+
+    let html =
+        "<h2>Cases Found: " + cases.length + "</h2>";
 
     cases.forEach(function(caseData) {
 
         html += `
             <hr>
-            <p><strong>Branch:</strong> ${caseData.branch || ""}</p>
-            <p><strong>Loan No:</strong> ${caseData.loan_no || ""}</p>
-            <p><strong>First Party:</strong> ${caseData.first_party || ""}</p>
-            <p><strong>Second Party:</strong> ${caseData.second_party || ""}</p>
-            <p><strong>Case No:</strong> ${caseData.case_no || ""}</p>
-            <p><strong>CNR Number:</strong> ${caseData.cnr_number || ""}</p>
-            <p><strong>Court:</strong> ${caseData.court_name || ""}</p>
-            <p><strong>Advocate:</strong> ${caseData.advocate || ""}</p>
-            <p><strong>Status:</strong> ${caseData.current_status || ""}</p>
-        `;
 
+            <p><strong>Branch:</strong>
+            ${caseData.branch || ""}</p>
+
+            <p><strong>Loan No:</strong>
+            ${caseData.loan_no || ""}</p>
+
+            <p><strong>First Party:</strong>
+            ${caseData.first_party || ""}</p>
+
+            <p><strong>Second Party:</strong>
+            ${caseData.second_party || ""}</p>
+
+            <p><strong>Case No:</strong>
+            ${caseData.case_no || ""}</p>
+
+            <p><strong>CNR Number:</strong>
+            ${caseData.cnr_number || ""}</p>
+
+            <p><strong>Court:</strong>
+            ${caseData.court_name || ""}</p>
+
+            <p><strong>Advocate:</strong>
+            ${caseData.advocate || ""}</p>
+
+            <p><strong>Next Date:</strong>
+            ${caseData.next_date || ""}</p>
+
+            <p><strong>Stage:</strong>
+            ${caseData.stage || ""}</p>
+
+            <p><strong>Current Status:</strong>
+            ${caseData.current_status || ""}</p>
+
+            <p><strong>Act:</strong>
+            ${caseData.act || ""}</p>
+
+            <p><strong>Section:</strong>
+            ${caseData.section || ""}</p>
+        `;
     });
 
     document.getElementById("cases").innerHTML = html;
 }
+
 
 function logout() {
 
     localStorage.removeItem("access_token");
 
     document.getElementById("system").style.display = "none";
+
     document.getElementById("login").style.display = "block";
 
     document.getElementById("cases").innerHTML = "";
