@@ -783,6 +783,16 @@ ${escapeHtml(c.next_date)}
 <td>${escapeHtml(c.act)}</td>
 
 <td>${escapeHtml(c.section)}</td>
+<td>
+    <button onclick="openECourts(
+        '${encodeURIComponent(c.case_no || '')}',
+        '${encodeURIComponent(c.first_party || '')}',
+        '${encodeURIComponent(c.second_party || '')}',
+        '${encodeURIComponent(c.advocate || '')}'
+    )">
+        🔎 eCourts
+    </button>
+</td>
 
 </tr>
 
@@ -1048,7 +1058,21 @@ return String(value)
 }
 
 
+function openECourts(caseNo, firstParty, secondParty, advocate) {
 
+    const url = "https://services.ecourts.gov.in/ecourtindia_v6/casestatus/";
+
+    window.open(url, "_blank");
+
+    alert(
+        "eCourts opened.\n\n" +
+        "Case No.: " + decodeURIComponent(caseNo) + "\n" +
+        "First Party: " + decodeURIComponent(firstParty) + "\n" +
+        "Second Party: " + decodeURIComponent(secondParty) + "\n" +
+        "Advocate: " + decodeURIComponent(advocate) + "\n\n" +
+        "Please use these details to search the case on eCourts and enter the CAPTCHA manually."
+    );
+}
 /* LOGOUT */
 
 function logout() {
