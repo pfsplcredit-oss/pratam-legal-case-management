@@ -896,118 +896,117 @@ applyFilters();
 /* APPLY ALL FILTERS */
 
 function applyFilters() {
+
     let filtered = [...allCases];
 
-    // Global search
-    const searchText = document.getElementById("globalSearch").value
+    /* GLOBAL SEARCH */
+
+    const searchText =
+        document.getElementById("globalSearch")
+        .value
         .trim()
         .toLowerCase();
 
     if (searchText) {
-        filtered = filtered.filter(row =>
-            String(row.loan_no || "").toLowerCase().includes(searchText) ||
-            String(row.first_party || "").toLowerCase().includes(searchText) ||
-            String(row.second_party || "").toLowerCase().includes(searchText) ||
-            String(row.case_no || "").toLowerCase().includes(searchText) ||
-            String(row.cnr_number || "").toLowerCase().includes(searchText)
-        );
+
+        filtered = filtered.filter(function(row) {
+
+            return (
+                String(row.loan_no || "")
+                    .toLowerCase()
+                    .includes(searchText)
+
+                ||
+
+                String(row.first_party || "")
+                    .toLowerCase()
+                    .includes(searchText)
+
+                ||
+
+                String(row.second_party || "")
+                    .toLowerCase()
+                    .includes(searchText)
+
+                ||
+
+                String(row.case_no || "")
+                    .toLowerCase()
+                    .includes(searchText)
+
+                ||
+
+                String(row.cnr_number || "")
+                    .toLowerCase()
+                    .includes(searchText)
+            );
+
+        });
+
     }
 
-    // Column filters
-    Object.keys(activeFilters).forEach(field => {
-        const filterValue = String(activeFilters[field] || "")
+
+    /* COLUMN FILTERS */
+
+    Object.keys(activeFilters).forEach(function(field) {
+
+        const filterValue =
+            String(activeFilters[field] || "")
             .trim()
             .toLowerCase();
 
-        if (!filterValue) return;
+        if (!filterValue) {
+            return;
+        }
 
-        filtered = filtered.filter(row => {
-            let caseValue = row[field];
 
-            if (caseValue === null || caseValue === undefined) {
+        filtered = filtered.filter(function(row) {
+
+            const caseValue = row[field];
+
+
+            /* EMPTY VALUE */
+
+            if (
+                caseValue === null ||
+                caseValue === undefined
+            ) {
                 return false;
             }
 
-            // Special handling for dates
-            if (field === "previous_date" || field === "next_date") {
-                const dateValue = String(caseValue).substring(0, 10);
+
+            /* DATE FILTER */
+
+            if (
+                field === "previous_date" ||
+                field === "next_date"
+            ) {
+
+                const dateValue =
+                    String(caseValue)
+                    .substring(0, 10);
+
                 return dateValue === filterValue;
+
             }
+
+
+            /* NORMAL FILTER */
 
             return String(caseValue)
                 .toLowerCase()
                 .includes(filterValue);
+
         });
+
     });
 
+
+    /* SHOW FILTERED RESULTS */
+
     displayCases(filtered);
-}
-
-const globalSearch =
-document.getElementById("globalSearch")
-.value
-.toLowerCase()
-.trim();
-
-
-const filtered =
-allCases.filter(function(c) {
-
-
-if (
-globalSearch &&
-![
-c.loan_no,
-c.first_party,
-c.second_party,
-c.case_no,
-c.cnr_number
-]
-.join(" ")
-.toLowerCase()
-.includes(globalSearch)
-) {
-
-return false;
 
 }
-
-
-for (const field in activeFilters) {
-
-const filterValue =
-activeFilters[field];
-
-
-if (!filterValue) continue;
-
-
-const caseValue =
-String(c[field] || "")
-.toLowerCase();
-
-
-if (!caseValue.includes(filterValue)) {
-
-return false;
-
-}
-
-}
-
-
-return true;
-
-});
-
-
-displayCases(filtered);
-
-}
-
-
-
-/* CLEAR FILTERS */
 
 function clearFilters() {
 
