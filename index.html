@@ -1,74 +1,255 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <title>Pratam Legal Case Management System</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f6f8;
+        }
+
+        .header {
+            background: #1f4e78;
+            color: white;
+            padding: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 26px;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        #login {
+            width: 350px;
+            margin: 80px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #login input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background: #1f4e78;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #163a5c;
+        }
+
+        .search-area {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+
+        .search-area input {
+            width: 350px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .summary {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .table-container {
+            background: white;
+            overflow-x: auto;
+            border-radius: 6px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1300px;
+        }
+
+        th {
+            background: #1f4e78;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 9px;
+            border-bottom: 1px solid #ddd;
+            white-space: nowrap;
+        }
+
+        tr:hover {
+            background: #f1f5f9;
+        }
+
+        .status-open {
+            font-weight: bold;
+        }
+
+        .status-closed {
+            font-weight: bold;
+        }
+
+        .no-data {
+            padding: 20px;
+            text-align: center;
+        }
+
+    </style>
+
 </head>
 
 <body>
 
-    <h1>Pratam Finserv</h1>
-    <h2>Legal Case Management System</h2>
+    <div class="header">
+        <h1>Pratam Finserv</h1>
+        <p>Legal Case Management System</p>
+    </div>
+
+
+    <!-- LOGIN -->
 
     <div id="login">
-        <h3>Login</h3>
 
-        <input type="email" id="email" placeholder="Email">
-        <br><br>
+        <h2>Login</h2>
 
-        <input type="password" id="password" placeholder="Password">
-        <br><br>
+        <input
+            type="email"
+            id="email"
+            placeholder="Email"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
 
         <button onclick="login()">Login</button>
 
         <p id="loginMessage"></p>
+
     </div>
+
+
+    <!-- MAIN SYSTEM -->
 
     <div id="system" style="display:none;">
 
-        <h3>Search Case</h3>
+        <div class="container">
 
-        <input
-            type="text"
-            id="searchBox"
-            placeholder="Loan No., Party Name, Case No. or CNR"
-        >
+            <div class="search-area">
 
-        <button onclick="searchCases()">Search</button>
-        <button onclick="showAllCases()">Show All Cases</button>
-        <button onclick="logout()">Logout</button>
+                <h2>Legal Case MIS</h2>
 
-        <div id="cases"></div>
+                <input
+                    type="text"
+                    id="searchBox"
+                    placeholder="Search Loan No., Party Name, Case No. or CNR"
+                >
+
+                <button onclick="searchCases()">
+                    Search
+                </button>
+
+                <button onclick="showAllCases()">
+                    Show All Cases
+                </button>
+
+                <button onclick="logout()">
+                    Logout
+                </button>
+
+            </div>
+
+
+            <div id="cases"></div>
+
+        </div>
 
     </div>
 
+
 <script>
 
-const SUPABASE_URL = "https://tawykarkhepvtaxnxxjd.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_UbXEMo3CGKj6LbSu98xfFg_rvf2-kn_";
+const SUPABASE_URL =
+    "https://tawykarkhepvtaxnxxjd.supabase.co";
 
+
+const SUPABASE_KEY =
+    "sb_publishable_UbXEMo3CGKj6LbSu98xfFg_rvf2-kn_";
+
+
+
+/* LOGIN */
 
 async function login() {
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email =
+        document.getElementById("email").value;
+
+    const password =
+        document.getElementById("password").value;
+
 
     const response = await fetch(
-        SUPABASE_URL + "/auth/v1/token?grant_type=password",
+
+        SUPABASE_URL +
+        "/auth/v1/token?grant_type=password",
+
         {
             method: "POST",
+
             headers: {
                 "apikey": SUPABASE_KEY,
                 "Content-Type": "application/json"
             },
+
             body: JSON.stringify({
                 email: email,
                 password: password
             })
         }
+
     );
 
-    const data = await response.json();
+
+    const data =
+        await response.json();
+
 
     if (!response.ok) {
 
@@ -78,184 +259,299 @@ async function login() {
         return;
     }
 
-    localStorage.setItem("access_token", data.access_token);
 
-    document.getElementById("login").style.display = "none";
-    document.getElementById("system").style.display = "block";
+    localStorage.setItem(
+        "access_token",
+        data.access_token
+    );
+
+
+    document.getElementById("login").style.display =
+        "none";
+
+    document.getElementById("system").style.display =
+        "block";
+
 
     showAllCases();
+
 }
 
+
+
+/* SEARCH CASE */
 
 async function searchCases() {
 
     const searchText =
         document.getElementById("searchBox").value.trim();
 
+
     if (searchText === "") {
 
         document.getElementById("cases").innerHTML =
-            "<p>Please enter something to search.</p>";
+            "<div class='no-data'>Please enter something to search.</div>";
 
         return;
     }
 
-    const token = localStorage.getItem("access_token");
+
+    const token =
+        localStorage.getItem("access_token");
+
 
     const url =
         SUPABASE_URL +
         "/rest/v1/legal_cases" +
         "?select=*" +
         "&or=" +
-        "(loan_no.ilike.*" + encodeURIComponent(searchText) +
-        "*,first_party.ilike.*" + encodeURIComponent(searchText) +
-        "*,second_party.ilike.*" + encodeURIComponent(searchText) +
-        "*,case_no.ilike.*" + encodeURIComponent(searchText) +
-        "*,cnr_number.ilike.*" + encodeURIComponent(searchText) +
+        "(loan_no.ilike.*" +
+        encodeURIComponent(searchText) +
+        "*,first_party.ilike.*" +
+        encodeURIComponent(searchText) +
+        "*,second_party.ilike.*" +
+        encodeURIComponent(searchText) +
+        "*,case_no.ilike.*" +
+        encodeURIComponent(searchText) +
+        "*,cnr_number.ilike.*" +
+        encodeURIComponent(searchText) +
         ")";
 
-    const response = await fetch(
-        url,
-        {
-            headers: {
-                "apikey": SUPABASE_KEY,
-                "Authorization": "Bearer " + token
-            }
-        }
-    );
 
-    const cases = await response.json();
+    const response =
+        await fetch(
+
+            url,
+
+            {
+                headers: {
+                    "apikey": SUPABASE_KEY,
+                    "Authorization":
+                        "Bearer " + token
+                }
+            }
+
+        );
+
+
+    const cases =
+        await response.json();
+
 
     if (!response.ok) {
 
         document.getElementById("cases").innerHTML =
-            "<p>Unable to search cases.</p>";
+            "<div class='no-data'>Unable to search cases.</div>";
 
         return;
     }
 
+
     displayCases(cases);
+
 }
 
+
+
+/* SHOW ALL CASES */
 
 async function showAllCases() {
 
-    const token = localStorage.getItem("access_token");
+    const token =
+        localStorage.getItem("access_token");
 
-    const response = await fetch(
-        SUPABASE_URL + "/rest/v1/legal_cases?select=*",
-        {
-            headers: {
-                "apikey": SUPABASE_KEY,
-                "Authorization": "Bearer " + token
+
+    const response =
+        await fetch(
+
+            SUPABASE_URL +
+            "/rest/v1/legal_cases?select=*",
+
+            {
+                headers: {
+                    "apikey": SUPABASE_KEY,
+                    "Authorization":
+                        "Bearer " + token
+                }
             }
-        }
-    );
 
-    const cases = await response.json();
+        );
+
+
+    const cases =
+        await response.json();
+
 
     if (!response.ok) {
 
         document.getElementById("cases").innerHTML =
-            "<p>Unable to load cases.</p>";
+            "<div class='no-data'>Unable to load cases.</div>";
 
         return;
     }
 
+
     displayCases(cases);
+
 }
 
 
+
+/* DISPLAY CASES AS TABLE */
+
 function displayCases(cases) {
+
 
     if (cases.length === 0) {
 
         document.getElementById("cases").innerHTML =
-            "<p>No matching cases found.</p>";
+            "<div class='no-data'>No matching cases found.</div>";
 
         return;
     }
 
-    let html =
-        "<h2>Cases Found: " + cases.length + "</h2>";
 
-    cases.forEach(function(caseData) {
+    let html = `
+
+        <div class="summary">
+
+            Total Cases Found:
+            ${cases.length}
+
+        </div>
+
+
+        <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Sr. No.</th>
+
+                    <th>Branch</th>
+
+                    <th>Loan No.</th>
+
+                    <th>First Party</th>
+
+                    <th>Second Party</th>
+
+                    <th>Case No.</th>
+
+                    <th>CNR Number</th>
+
+                    <th>Court Name</th>
+
+                    <th>Advocate</th>
+
+                    <th>Previous Date</th>
+
+                    <th>Next Date</th>
+
+                    <th>Stage</th>
+
+                    <th>Current Status</th>
+
+                    <th>Act</th>
+
+                    <th>Section</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+    `;
+
+
+    cases.forEach(function(caseData, index) {
+
 
         html += `
-            <hr>
 
-            <h3>Case Details</h3>
+            <tr>
 
-            <p><strong>Branch:</strong> ${caseData.branch || ""}</p>
+                <td>${index + 1}</td>
 
-            <p><strong>Loan No:</strong> ${caseData.loan_no || ""}</p>
+                <td>${caseData.branch || ""}</td>
 
-            <p><strong>Disbursement Date:</strong> ${caseData.disbursement_date || ""}</p>
+                <td><strong>${caseData.loan_no || ""}</strong></td>
 
-            <p><strong>Lender:</strong> ${caseData.lender || ""}</p>
+                <td>${caseData.first_party || ""}</td>
 
-            <p><strong>First Party:</strong> ${caseData.first_party || ""}</p>
+                <td>${caseData.second_party || ""}</td>
 
-            <p><strong>Second Party:</strong> ${caseData.second_party || ""}</p>
+                <td>${caseData.case_no || ""}</td>
 
-            <p><strong>Case No:</strong> ${caseData.case_no || ""}</p>
+                <td>${caseData.cnr_number || ""}</td>
 
-            <p><strong>E-Filing Date:</strong> ${caseData.e_filing_date || ""}</p>
+                <td>${caseData.court_name || ""}</td>
 
-            <p><strong>Filing Date:</strong> ${caseData.filing_date || ""}</p>
+                <td>${caseData.advocate || ""}</td>
 
-            <p><strong>Court Name:</strong> ${caseData.court_name || ""}</p>
+                <td>${caseData.previous_date || ""}</td>
 
-            <p><strong>Advocate:</strong> ${caseData.advocate || ""}</p>
+                <td><strong>${caseData.next_date || ""}</strong></td>
 
-            <p><strong>Previous Date:</strong> ${caseData.previous_date || ""}</p>
+                <td>${caseData.stage || ""}</td>
 
-            <p><strong>Next Date:</strong> ${caseData.next_date || ""}</p>
+                <td>${caseData.current_status || ""}</td>
 
-            <p><strong>Stage:</strong> ${caseData.stage || ""}</p>
+                <td>${caseData.act || ""}</td>
 
-            <p><strong>Current Status:</strong> ${caseData.current_status || ""}</p>
+                <td>${caseData.section || ""}</td>
 
-            <p><strong>Act:</strong> ${caseData.act || ""}</p>
+            </tr>
 
-            <p><strong>Section:</strong> ${caseData.section || ""}</p>
-
-            <p><strong>CNR Number:</strong> ${caseData.cnr_number || ""}</p>
-
-            <p><strong>eCourts Last Checked:</strong> ${caseData.ecourts_last_checked || ""}</p>
-
-            <p><strong>eCourts Status:</strong> ${caseData.ecourts_status || ""}</p>
-
-            <p><strong>Last Order Date:</strong> ${caseData.last_order_date || ""}</p>
-
-            <p><strong>Last Order Details:</strong> ${caseData.last_order_details || ""}</p>
-
-            <p><strong>Next Hearing Date:</strong> ${caseData.next_hearing_date || ""}</p>
-
-            <p><strong>eCourts URL:</strong> ${caseData.ecourts_url || ""}</p>
-
-            <p><strong>Updated By:</strong> ${caseData.updated_by || ""}</p>
-
-            <p><strong>Updated On:</strong> ${caseData.updated_on || ""}</p>
         `;
+
     });
 
-    document.getElementById("cases").innerHTML = html;
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+        </div>
+
+    `;
+
+
+    document.getElementById("cases").innerHTML =
+        html;
+
 }
 
+
+
+/* LOGOUT */
 
 function logout() {
 
     localStorage.removeItem("access_token");
 
-    document.getElementById("system").style.display = "none";
 
-    document.getElementById("login").style.display = "block";
+    document.getElementById("system").style.display =
+        "none";
 
-    document.getElementById("cases").innerHTML = "";
+
+    document.getElementById("login").style.display =
+        "block";
+
+
+    document.getElementById("cases").innerHTML =
+        "";
+
 }
+
 
 </script>
 
 </body>
+
 </html>
