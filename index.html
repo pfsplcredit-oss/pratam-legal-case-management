@@ -9,35 +9,92 @@
     <h1>Pratam Finserv</h1>
     <h2>Legal Case Management System</h2>
 
-    <button onclick="loadCases()">View Legal Cases</button>
+    <div id="login">
+        <h3>Login</h3>
 
-    <div id="cases"></div>
+        <input type="email" id="email" placeholder="Email">
+        <br><br>
+
+        <input type="password" id="password" placeholder="Password">
+        <br><br>
+
+        <button onclick="login()">Login</button>
+
+        <p id="loginMessage"></p>
+    </div>
+
+    <div id="system" style="display:none;">
+        <button onclick="loadCases()">View Legal Cases</button>
+        <button onclick="logout()">Logout</button>
+
+        <div id="cases"></div>
+    </div>
 
 <script>
 
 const SUPABASE_URL = "https://tawykarkhepvtaxnxxjd.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhd3lrYXJraGVwdnRheG54eGpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NTIzMDIsImV4cCI6MjEwNTAyODMwMn0.nKvvX34Cl1pWfBY_Aljw7WTDKiQzECVt_6k1tldwn4c";
+
+const SUPABASE_KEY = "sb_publishable_UbXEMo3CGKj6LbSu98xfFg_rvf2-kn_";
+
+async function login() {
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const response = await fetch(
+        SUPABASE_URL + "/auth/v1/token?grant_type=password",
+        {
+            method: "POST",
+            headers: {
+                "apikey": SUPABASE_KEY,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        document.getElementById("loginMessage").innerText =
+            "Login failed. Please check your email and password.";
+        return;
+    }
+
+    localStorage.setItem("access_token", data.access_token);
+
+    document.getElementById("login").style.display = "none";
+    document.getElementById("system").style.display = "block";
+
+    document.getElementById("loginMessage").innerText = "";
+}
 
 async function loadCases() {
+
+    const token = localStorage.getItem("access_token");
 
     const response = await fetch(
         SUPABASE_URL + "/rest/v1/legal_cases?select=*",
         {
             headers: {
                 "apikey": SUPABASE_KEY,
-                "Authorization": "Bearer " + SUPABASE_KEY
+                "Authorization": "Bearer " + token
             }
         }
     );
 
     const cases = await response.json();
+
     if (!response.ok) {
-    document.getElementById("cases").innerHTML =
-        "<p>Unable to load cases. Supabase returned an error.</p><pre>" +
-        JSON.stringify(cases, null, 2) +
-        "</pre>";
-    return;
-}
+        document.getElementById("cases").innerHTML =
+            "<p>Unable to load cases.</p><pre>" +
+            JSON.stringify(cases, null, 2) +
+            "</pre>";
+        return;
+    }
 
     let html = "<h2>Legal Cases</h2>";
 
@@ -59,6 +116,16 @@ async function loadCases() {
     });
 
     document.getElementById("cases").innerHTML = html;
+}
+
+function logout() {
+
+    localStorage.removeItem("access_token");
+
+    document.getElementById("system").style.display = "none";
+    document.getElementById("login").style.display = "block";
+
+    document.getElementById("cases").innerHTML = "";
 }
 
 </script>
