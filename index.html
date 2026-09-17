@@ -896,6 +896,52 @@ applyFilters();
 /* APPLY ALL FILTERS */
 
 function applyFilters() {
+    let filtered = [...allCases];
+
+    // Global search
+    const searchText = document.getElementById("globalSearch").value
+        .trim()
+        .toLowerCase();
+
+    if (searchText) {
+        filtered = filtered.filter(row =>
+            String(row.loan_no || "").toLowerCase().includes(searchText) ||
+            String(row.first_party || "").toLowerCase().includes(searchText) ||
+            String(row.second_party || "").toLowerCase().includes(searchText) ||
+            String(row.case_no || "").toLowerCase().includes(searchText) ||
+            String(row.cnr_number || "").toLowerCase().includes(searchText)
+        );
+    }
+
+    // Column filters
+    Object.keys(activeFilters).forEach(field => {
+        const filterValue = String(activeFilters[field] || "")
+            .trim()
+            .toLowerCase();
+
+        if (!filterValue) return;
+
+        filtered = filtered.filter(row => {
+            let caseValue = row[field];
+
+            if (caseValue === null || caseValue === undefined) {
+                return false;
+            }
+
+            // Special handling for dates
+            if (field === "previous_date" || field === "next_date") {
+                const dateValue = String(caseValue).substring(0, 10);
+                return dateValue === filterValue;
+            }
+
+            return String(caseValue)
+                .toLowerCase()
+                .includes(filterValue);
+        });
+    });
+
+    displayCases(filtered);
+}
 
 const globalSearch =
 document.getElementById("globalSearch")
