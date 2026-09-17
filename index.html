@@ -3,158 +3,169 @@
 
 <head>
 
-    <title>Pratam Legal Case Management System</title>
+<title>Pratam Legal Case Management System</title>
 
-    <style>
+<style>
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #f4f6f8;
-        }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f6f8;
+}
 
-        .header {
-            background: #1f4e78;
-            color: white;
-            padding: 20px;
-        }
+.header {
+    background: #1f4e78;
+    color: white;
+    padding: 20px;
+}
 
-        .header h1 {
-            margin: 0;
-        }
+.header h1 {
+    margin: 0;
+}
 
-        .header p {
-            margin: 5px 0 0;
-        }
+.header p {
+    margin: 5px 0 0;
+}
 
-        .container {
-            padding: 20px;
-        }
+.container {
+    padding: 20px;
+}
 
-        .search-panel {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
+.search-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
 
-        .filter-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-top: 15px;
-        }
+.global-search {
+    width: 350px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
-        .filter-box label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+button {
+    background: #1f4e78;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    margin: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
-        .filter-box input,
-        .filter-box select {
-            width: 100%;
-            padding: 9px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+button:hover {
+    background: #163a5c;
+}
 
-        button {
-            background: #1f4e78;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            margin: 5px 5px 5px 0;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+.summary {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    font-weight: bold;
+}
 
-        button:hover {
-            background: #163a5c;
-        }
+.table-container {
+    background: white;
+    overflow-x: auto;
+    border-radius: 6px;
+}
 
-        .summary {
-            background: white;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1900px;
+}
 
-        .table-container {
-            background: white;
-            overflow-x: auto;
-            border-radius: 6px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-        }
+th {
+    background: #1f4e78;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    white-space: nowrap;
+    position: relative;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 1800px;
-        }
+td {
+    padding: 9px;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+}
 
-        th {
-            background: #1f4e78;
-            color: white;
-            padding: 10px;
-            text-align: left;
-            white-space: nowrap;
-        }
+tr:hover {
+    background: #f1f5f9;
+}
 
-        td {
-            padding: 9px;
-            border-bottom: 1px solid #ddd;
-            white-space: nowrap;
-        }
+.filter-button {
+    background: white;
+    color: #1f4e78;
+    padding: 3px 7px;
+    margin-left: 5px;
+    border-radius: 3px;
+}
 
-        tr:hover {
-            background: #f1f5f9;
-        }
+.filter-menu {
+    display: none;
+    position: absolute;
+    top: 38px;
+    left: 0;
+    background: white;
+    color: black;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+    min-width: 220px;
+}
 
-        #login {
-            width: 350px;
-            margin: 80px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+.filter-menu input,
+.filter-menu select {
+    width: 100%;
+    padding: 7px;
+    box-sizing: border-box;
+    margin-bottom: 7px;
+}
 
-        #login input {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
+.filter-menu button {
+    padding: 7px 10px;
+    margin: 2px;
+}
 
-        .no-data {
-            background: white;
-            padding: 20px;
-            text-align: center;
-        }
+.no-data {
+    background: white;
+    padding: 20px;
+    text-align: center;
+}
 
-        @media (max-width: 900px) {
-            .filter-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+#login {
+    width: 350px;
+    margin: 80px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+}
 
-    </style>
+#login input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+</style>
 
 </head>
-
 
 <body>
 
 
 <div class="header">
 
-    <h1>Pratam Finserv</h1>
+<h1>Pratam Finserv</h1>
 
-    <p>Legal Case Management System</p>
+<p>Legal Case Management System</p>
 
 </div>
 
@@ -163,23 +174,23 @@
 
 <div id="login">
 
-    <h2>Login</h2>
+<h2>Login</h2>
 
-    <input
-        type="email"
-        id="email"
-        placeholder="Email"
-    >
+<input
+type="email"
+id="email"
+placeholder="Email"
+>
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Password"
-    >
+<input
+type="password"
+id="password"
+placeholder="Password"
+>
 
-    <button onclick="login()">Login</button>
+<button onclick="login()">Login</button>
 
-    <p id="loginMessage"></p>
+<p id="loginMessage"></p>
 
 </div>
 
@@ -191,258 +202,32 @@
 <div class="container">
 
 
-<!-- SEARCH AND FILTER PANEL -->
-
 <div class="search-panel">
 
-    <h2>Legal Case MIS</h2>
-
-
-    <div class="filter-box">
-
-        <label>Search All</label>
-
-        <input
-            type="text"
-            id="globalSearch"
-            placeholder="Loan No., Party, Case No., CNR..."
-        >
-
-    </div>
-
-
-    <div class="filter-grid">
-
-
-        <div class="filter-box">
-
-            <label>Branch</label>
-
-            <select id="branchFilter">
-
-                <option value="">All Branches</option>
-
-            </select>
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Loan No.</label>
-
-            <input
-                type="text"
-                id="loanFilter"
-                placeholder="Enter Loan No."
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>First Party</label>
-
-            <input
-                type="text"
-                id="firstPartyFilter"
-                placeholder="Enter First Party"
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Second Party</label>
-
-            <input
-                type="text"
-                id="secondPartyFilter"
-                placeholder="Enter Second Party"
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Case No.</label>
-
-            <input
-                type="text"
-                id="caseNoFilter"
-                placeholder="Enter Case No."
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>CNR Number</label>
-
-            <input
-                type="text"
-                id="cnrFilter"
-                placeholder="Enter CNR"
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Court Name</label>
-
-            <input
-                type="text"
-                id="courtFilter"
-                placeholder="Enter Court"
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Advocate</label>
-
-            <input
-                type="text"
-                id="advocateFilter"
-                placeholder="Enter Advocate"
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Stage</label>
-
-            <select id="stageFilter">
-
-                <option value="">All Stages</option>
-
-            </select>
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Current Status</label>
-
-            <select id="statusFilter">
-
-                <option value="">All Status</option>
-
-            </select>
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Act</label>
-
-            <input
-                type="text"
-                id="actFilter"
-                placeholder="Enter Act"
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Section</label>
-
-            <input
-                type="text"
-                id="sectionFilter"
-                placeholder="Enter Section"
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Previous Date From</label>
-
-            <input
-                type="date"
-                id="previousFrom"
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Previous Date To</label>
-
-            <input
-                type="date"
-                id="previousTo"
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Next Date From</label>
-
-            <input
-                type="date"
-                id="nextFrom"
-            >
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <label>Next Date To</label>
-
-            <input
-                type="date"
-                id="nextTo"
-            >
-
-        </div>
-
-
-    </div>
-
-
-    <br>
-
-
-    <button onclick="applyFilters()">
-        Apply Filters
-    </button>
-
-
-    <button onclick="clearFilters()">
-        Clear Filters
-    </button>
-
-
-    <button onclick="showAllCases()">
-        Show All Cases
-    </button>
-
-
-    <button onclick="logout()">
-        Logout
-    </button>
-
+<h2>Legal Case MIS</h2>
+
+<input
+class="global-search"
+type="text"
+id="globalSearch"
+placeholder="Search Loan No., Party, Case No., CNR..."
+>
+
+<button onclick="applyFilters()">
+Search
+</button>
+
+<button onclick="clearFilters()">
+Clear Filters
+</button>
+
+<button onclick="showAllCases()">
+Show All Cases
+</button>
+
+<button onclick="logout()">
+Logout
+</button>
 
 </div>
 
@@ -459,14 +244,16 @@
 
 
 const SUPABASE_URL =
-    "https://tawykarkhepvtaxnxxjd.supabase.co";
+"https://tawykarkhepvtaxnxxjd.supabase.co";
 
 
 const SUPABASE_KEY =
-    "sb_publishable_UbXEMo3CGKj6LbSu98xfFg_rvf2-kn_";
+"YOUR_PUBLISHABLE_KEY_HERE";
 
 
 let allCases = [];
+
+let activeFilters = {};
 
 
 
@@ -474,535 +261,110 @@ let allCases = [];
 
 async function login() {
 
+const email =
+document.getElementById("email").value;
 
-    const email =
-        document.getElementById("email").value;
-
-
-    const password =
-        document.getElementById("password").value;
+const password =
+document.getElementById("password").value;
 
 
-    const response = await fetch(
+const response = await fetch(
 
-        SUPABASE_URL +
-        "/auth/v1/token?grant_type=password",
+SUPABASE_URL +
+"/auth/v1/token?grant_type=password",
 
-        {
-            method: "POST",
+{
+method: "POST",
 
-            headers: {
-                "apikey": SUPABASE_KEY,
-                "Content-Type": "application/json"
-            },
+headers: {
+"apikey": SUPABASE_KEY,
+"Content-Type": "application/json"
+},
 
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        }
+body: JSON.stringify({
+email: email,
+password: password
+})
 
-    );
+}
 
-
-    const data =
-        await response.json();
+);
 
 
-    if (!response.ok) {
-
-        document.getElementById("loginMessage").innerText =
-            "Login failed. Please check your email and password.";
-
-        return;
-    }
+const data =
+await response.json();
 
 
-    localStorage.setItem(
-        "access_token",
-        data.access_token
-    );
+if (!response.ok) {
+
+document.getElementById("loginMessage").innerText =
+"Login failed. Please check your email and password.";
+
+return;
+
+}
 
 
-    document.getElementById("login").style.display =
-        "none";
+localStorage.setItem(
+"access_token",
+data.access_token
+);
 
 
-    document.getElementById("system").style.display =
-        "block";
+document.getElementById("login").style.display =
+"none";
+
+document.getElementById("system").style.display =
+"block";
 
 
-    await showAllCases();
+showAllCases();
 
 }
 
 
 
-/* LOAD ALL CASES */
+/* LOAD CASES */
 
 async function showAllCases() {
 
-
-    const token =
-        localStorage.getItem("access_token");
-
-
-    const response =
-        await fetch(
-
-            SUPABASE_URL +
-            "/rest/v1/legal_cases?select=*",
-
-            {
-                headers: {
-                    "apikey": SUPABASE_KEY,
-                    "Authorization":
-                        "Bearer " + token
-                }
-            }
-
-        );
+const token =
+localStorage.getItem("access_token");
 
 
-    const cases =
-        await response.json();
+const response =
+await fetch(
+
+SUPABASE_URL +
+"/rest/v1/legal_cases?select=*",
+
+{
+headers: {
+"apikey": SUPABASE_KEY,
+"Authorization": "Bearer " + token
+}
+}
+
+);
 
 
-    if (!response.ok) {
-
-        document.getElementById("cases").innerHTML =
-            "<div class='no-data'>Unable to load cases.</div>";
-
-        return;
-    }
+const cases =
+await response.json();
 
 
-    allCases = cases;
+if (!response.ok) {
 
+document.getElementById("cases").innerHTML =
+"<div class='no-data'>Unable to load cases.</div>";
 
-    createFilterOptions();
-
-
-    displayCases(allCases);
+return;
 
 }
 
 
+allCases = cases;
 
-/* CREATE DROPDOWN OPTIONS */
-
-function createFilterOptions() {
-
-
-    const branches =
-        [...new Set(
-            allCases
-                .map(c => c.branch)
-                .filter(Boolean)
-        )]
-        .sort();
-
-
-    const stages =
-        [...new Set(
-            allCases
-                .map(c => c.stage)
-                .filter(Boolean)
-        )]
-        .sort();
-
-
-    const statuses =
-        [...new Set(
-            allCases
-                .map(c => c.current_status)
-                .filter(Boolean)
-        )]
-        .sort();
-
-
-    const branchSelect =
-        document.getElementById("branchFilter");
-
-
-    const stageSelect =
-        document.getElementById("stageFilter");
-
-
-    const statusSelect =
-        document.getElementById("statusFilter");
-
-
-    branchSelect.innerHTML =
-        '<option value="">All Branches</option>';
-
-
-    stageSelect.innerHTML =
-        '<option value="">All Stages</option>';
-
-
-    statusSelect.innerHTML =
-        '<option value="">All Status</option>';
-
-
-    branches.forEach(function(branch) {
-
-        branchSelect.innerHTML +=
-            `<option value="${escapeHtml(branch)}">${escapeHtml(branch)}</option>`;
-
-    });
-
-
-    stages.forEach(function(stage) {
-
-        stageSelect.innerHTML +=
-            `<option value="${escapeHtml(stage)}">${escapeHtml(stage)}</option>`;
-
-    });
-
-
-    statuses.forEach(function(status) {
-
-        statusSelect.innerHTML +=
-            `<option value="${escapeHtml(status)}">${escapeHtml(status)}</option>`;
-
-    });
-
-}
-
-
-
-/* APPLY FILTERS */
-
-function applyFilters() {
-
-
-    const globalSearch =
-        document.getElementById("globalSearch")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const branch =
-        document.getElementById("branchFilter").value;
-
-
-    const loan =
-        document.getElementById("loanFilter")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const firstParty =
-        document.getElementById("firstPartyFilter")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const secondParty =
-        document.getElementById("secondPartyFilter")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const caseNo =
-        document.getElementById("caseNoFilter")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const cnr =
-        document.getElementById("cnrFilter")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const court =
-        document.getElementById("courtFilter")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const advocate =
-        document.getElementById("advocateFilter")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const stage =
-        document.getElementById("stageFilter").value;
-
-
-    const status =
-        document.getElementById("statusFilter").value;
-
-
-    const act =
-        document.getElementById("actFilter")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const section =
-        document.getElementById("sectionFilter")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    const previousFrom =
-        document.getElementById("previousFrom").value;
-
-
-    const previousTo =
-        document.getElementById("previousTo").value;
-
-
-    const nextFrom =
-        document.getElementById("nextFrom").value;
-
-
-    const nextTo =
-        document.getElementById("nextTo").value;
-
-
-
-    const filtered =
-        allCases.filter(function(c) {
-
-
-        const searchableText = [
-
-            c.loan_no,
-            c.first_party,
-            c.second_party,
-            c.case_no,
-            c.cnr_number
-
-        ]
-        .join(" ")
-        .toLowerCase();
-
-
-        if (
-            globalSearch &&
-            !searchableText.includes(globalSearch)
-        ) {
-            return false;
-        }
-
-
-        if (
-            branch &&
-            c.branch !== branch
-        ) {
-            return false;
-        }
-
-
-        if (
-            loan &&
-            !String(c.loan_no || "")
-                .toLowerCase()
-                .includes(loan)
-        ) {
-            return false;
-        }
-
-
-        if (
-            firstParty &&
-            !String(c.first_party || "")
-                .toLowerCase()
-                .includes(firstParty)
-        ) {
-            return false;
-        }
-
-
-        if (
-            secondParty &&
-            !String(c.second_party || "")
-                .toLowerCase()
-                .includes(secondParty)
-        ) {
-            return false;
-        }
-
-
-        if (
-            caseNo &&
-            !String(c.case_no || "")
-                .toLowerCase()
-                .includes(caseNo)
-        ) {
-            return false;
-        }
-
-
-        if (
-            cnr &&
-            !String(c.cnr_number || "")
-                .toLowerCase()
-                .includes(cnr)
-        ) {
-            return false;
-        }
-
-
-        if (
-            court &&
-            !String(c.court_name || "")
-                .toLowerCase()
-                .includes(court)
-        ) {
-            return false;
-        }
-
-
-        if (
-            advocate &&
-            !String(c.advocate || "")
-                .toLowerCase()
-                .includes(advocate)
-        ) {
-            return false;
-        }
-
-
-        if (
-            stage &&
-            c.stage !== stage
-        ) {
-            return false;
-        }
-
-
-        if (
-            status &&
-            c.current_status !== status
-        ) {
-            return false;
-        }
-
-
-        if (
-            act &&
-            !String(c.act || "")
-                .toLowerCase()
-                .includes(act)
-        ) {
-            return false;
-        }
-
-
-        if (
-            section &&
-            !String(c.section || "")
-                .toLowerCase()
-                .includes(section)
-        ) {
-            return false;
-        }
-
-
-        if (
-            previousFrom &&
-            (!c.previous_date ||
-             c.previous_date < previousFrom)
-        ) {
-            return false;
-        }
-
-
-        if (
-            previousTo &&
-            (!c.previous_date ||
-             c.previous_date > previousTo)
-        ) {
-            return false;
-        }
-
-
-        if (
-            nextFrom &&
-            (!c.next_date ||
-             c.next_date < nextFrom)
-        ) {
-            return false;
-        }
-
-
-        if (
-            nextTo &&
-            (!c.next_date ||
-             c.next_date > nextTo)
-        ) {
-            return false;
-        }
-
-
-        return true;
-
-    });
-
-
-    displayCases(filtered);
-
-}
-
-
-
-/* CLEAR FILTERS */
-
-function clearFilters() {
-
-
-    document.getElementById("globalSearch").value = "";
-
-    document.getElementById("branchFilter").value = "";
-
-    document.getElementById("loanFilter").value = "";
-
-    document.getElementById("firstPartyFilter").value = "";
-
-    document.getElementById("secondPartyFilter").value = "";
-
-    document.getElementById("caseNoFilter").value = "";
-
-    document.getElementById("cnrFilter").value = "";
-
-    document.getElementById("courtFilter").value = "";
-
-    document.getElementById("advocateFilter").value = "";
-
-    document.getElementById("stageFilter").value = "";
-
-    document.getElementById("statusFilter").value = "";
-
-    document.getElementById("actFilter").value = "";
-
-    document.getElementById("sectionFilter").value = "";
-
-    document.getElementById("previousFrom").value = "";
-
-    document.getElementById("previousTo").value = "";
-
-    document.getElementById("nextFrom").value = "";
-
-    document.getElementById("nextTo").value = "";
-
-
-    displayCases(allCases);
+displayCases(allCases);
 
 }
 
@@ -1012,137 +374,631 @@ function clearFilters() {
 
 function displayCases(cases) {
 
+if (cases.length === 0) {
 
-    if (cases.length === 0) {
+document.getElementById("cases").innerHTML =
+"<div class='no-data'>No matching cases found.</div>";
 
-        document.getElementById("cases").innerHTML =
-            "<div class='no-data'>No matching cases found.</div>";
+return;
 
-        return;
-    }
-
-
-    let html = `
-
-        <div class="summary">
-
-            Total Cases Found: ${cases.length}
-
-        </div>
+}
 
 
-        <div class="table-container">
+let html = `
 
-        <table>
+<div class="summary">
 
-            <thead>
+Total Cases Found: ${cases.length}
 
-                <tr>
+</div>
 
-                    <th>Sr. No.</th>
-                    <th>Branch</th>
-                    <th>Loan No.</th>
-                    <th>First Party</th>
-                    <th>Second Party</th>
-                    <th>Case No.</th>
-                    <th>CNR Number</th>
-                    <th>Court Name</th>
-                    <th>Advocate</th>
-                    <th>Previous Date</th>
-                    <th>Next Date</th>
-                    <th>Stage</th>
-                    <th>Current Status</th>
-                    <th>Act</th>
-                    <th>Section</th>
+<div class="table-container">
 
-                </tr>
+<table>
 
-            </thead>
+<thead>
 
-            <tbody>
-    `;
+<tr>
+
+<th>
+Sr. No.
+</th>
 
 
-    cases.forEach(function(c, index) {
+<th>
+
+Branch
+
+<button class="filter-button"
+onclick="openFilter('branch')">▼</button>
+
+<div class="filter-menu" id="filter-branch">
+
+<select id="input-branch">
+
+<option value="">All Branches</option>
+
+${uniqueOptions("branch")}
+
+</select>
+
+<button onclick="applyColumnFilter('branch')">
+Apply
+</button>
+
+</div>
+
+</th>
 
 
-        html += `
+<th>
 
-            <tr>
+Loan No.
 
-                <td>${index + 1}</td>
+<button class="filter-button"
+onclick="openFilter('loan_no')">▼</button>
 
-                <td>${escapeHtml(c.branch)}</td>
+<div class="filter-menu" id="filter-loan_no">
 
-                <td><strong>
-                    ${escapeHtml(c.loan_no)}
-                </strong></td>
+<input
+id="input-loan_no"
+placeholder="Search Loan No."
+>
 
-                <td>${escapeHtml(c.first_party)}</td>
+<button onclick="applyColumnFilter('loan_no')">
+Apply
+</button>
 
-                <td>${escapeHtml(c.second_party)}</td>
+</div>
 
-                <td>${escapeHtml(c.case_no)}</td>
-
-                <td>${escapeHtml(c.cnr_number)}</td>
-
-                <td>${escapeHtml(c.court_name)}</td>
-
-                <td>${escapeHtml(c.advocate)}</td>
-
-                <td>${escapeHtml(c.previous_date)}</td>
-
-                <td><strong>
-                    ${escapeHtml(c.next_date)}
-                </strong></td>
-
-                <td>${escapeHtml(c.stage)}</td>
-
-                <td>${escapeHtml(c.current_status)}</td>
-
-                <td>${escapeHtml(c.act)}</td>
-
-                <td>${escapeHtml(c.section)}</td>
-
-            </tr>
-
-        `;
-
-    });
+</th>
 
 
-    html += `
+<th>
 
-            </tbody>
+First Party
 
-        </table>
+<button class="filter-button"
+onclick="openFilter('first_party')">▼</button>
 
-        </div>
+<div class="filter-menu" id="filter-first_party">
 
-    `;
+<input
+id="input-first_party"
+placeholder="Search First Party"
+>
+
+<button onclick="applyColumnFilter('first_party')">
+Apply
+</button>
+
+</div>
+
+</th>
 
 
-    document.getElementById("cases").innerHTML =
-        html;
+<th>
+
+Second Party
+
+<button class="filter-button"
+onclick="openFilter('second_party')">▼</button>
+
+<div class="filter-menu" id="filter-second_party">
+
+<input
+id="input-second_party"
+placeholder="Search Second Party"
+>
+
+<button onclick="applyColumnFilter('second_party')">
+Apply
+</button>
+
+</div>
+
+</th>
+
+
+<th>
+
+Case No.
+
+<button class="filter-button"
+onclick="openFilter('case_no')">▼</button>
+
+<div class="filter-menu" id="filter-case_no">
+
+<input
+id="input-case_no"
+placeholder="Search Case No."
+>
+
+<button onclick="applyColumnFilter('case_no')">
+Apply
+</button>
+
+</div>
+
+</th>
+
+
+<th>
+
+CNR Number
+
+<button class="filter-button"
+onclick="openFilter('cnr_number')">▼</button>
+
+<div class="filter-menu" id="filter-cnr_number">
+
+<input
+id="input-cnr_number"
+placeholder="Search CNR"
+>
+
+<button onclick="applyColumnFilter('cnr_number')">
+Apply
+</button>
+
+</div>
+
+</th>
+
+
+<th>
+
+Court Name
+
+<button class="filter-button"
+onclick="openFilter('court_name')">▼</button>
+
+<div class="filter-menu" id="filter-court_name">
+
+<input
+id="input-court_name"
+placeholder="Search Court"
+>
+
+<button onclick="applyColumnFilter('court_name')">
+Apply
+</button>
+
+</div>
+
+</th>
+
+
+<th>
+
+Advocate
+
+<button class="filter-button"
+onclick="openFilter('advocate')">▼</button>
+
+<div class="filter-menu" id="filter-advocate">
+
+<input
+id="input-advocate"
+placeholder="Search Advocate"
+>
+
+<button onclick="applyColumnFilter('advocate')">
+Apply
+</button>
+
+</div>
+
+</th>
+
+
+<th>
+
+Previous Date
+
+<button class="filter-button"
+onclick="openFilter('previous_date')">▼</button>
+
+<div class="filter-menu" id="filter-previous_date">
+
+<input
+type="date"
+id="input-previous_date"
+>
+
+<button onclick="applyColumnFilter('previous_date')">
+Apply
+</button>
+
+</div>
+
+</th>
+
+
+<th>
+
+Next Date
+
+<button class="filter-button"
+onclick="openFilter('next_date')">▼</button>
+
+<div class="filter-menu" id="filter-next_date">
+
+<input
+type="date"
+id="input-next_date"
+>
+
+<button onclick="applyColumnFilter('next_date')">
+Apply
+</button>
+
+</div>
+
+</th>
+
+
+<th>
+
+Stage
+
+<button class="filter-button"
+onclick="openFilter('stage')">▼</button>
+
+<div class="filter-menu" id="filter-stage">
+
+<select id="input-stage">
+
+<option value="">All Stages</option>
+
+${uniqueOptions("stage")}
+
+</select>
+
+<button onclick="applyColumnFilter('stage')">
+Apply
+</button>
+
+</div>
+
+</th>
+
+
+<th>
+
+Current Status
+
+<button class="filter-button"
+onclick="openFilter('current_status')">▼</button>
+
+<div class="filter-menu" id="filter-current_status">
+
+<select id="input-current_status">
+
+<option value="">All Status</option>
+
+${uniqueOptions("current_status")}
+
+</select>
+
+<button onclick="applyColumnFilter('current_status')">
+Apply
+</button>
+
+</div>
+
+</th>
+
+
+<th>
+
+Act
+
+<button class="filter-button"
+onclick="openFilter('act')">▼</button>
+
+<div class="filter-menu" id="filter-act">
+
+<input
+id="input-act"
+placeholder="Search Act"
+>
+
+<button onclick="applyColumnFilter('act')">
+Apply
+</button>
+
+</div>
+
+</th>
+
+
+<th>
+
+Section
+
+<button class="filter-button"
+onclick="openFilter('section')">▼</button>
+
+<div class="filter-menu" id="filter-section">
+
+<input
+id="input-section"
+placeholder="Search Section"
+>
+
+<button onclick="applyColumnFilter('section')">
+Apply
+</button>
+
+</div>
+
+</th>
+
+
+</tr>
+
+</thead>
+
+<tbody>
+`;
+
+
+cases.forEach(function(c, index) {
+
+html += `
+
+<tr>
+
+<td>${index + 1}</td>
+
+<td>${escapeHtml(c.branch)}</td>
+
+<td><strong>
+${escapeHtml(c.loan_no)}
+</strong></td>
+
+<td>${escapeHtml(c.first_party)}</td>
+
+<td>${escapeHtml(c.second_party)}</td>
+
+<td>${escapeHtml(c.case_no)}</td>
+
+<td>${escapeHtml(c.cnr_number)}</td>
+
+<td>${escapeHtml(c.court_name)}</td>
+
+<td>${escapeHtml(c.advocate)}</td>
+
+<td>${escapeHtml(c.previous_date)}</td>
+
+<td><strong>
+${escapeHtml(c.next_date)}
+</strong></td>
+
+<td>${escapeHtml(c.stage)}</td>
+
+<td>${escapeHtml(c.current_status)}</td>
+
+<td>${escapeHtml(c.act)}</td>
+
+<td>${escapeHtml(c.section)}</td>
+
+</tr>
+
+`;
+
+});
+
+
+html += `
+
+</tbody>
+
+</table>
+
+</div>
+
+`;
+
+
+document.getElementById("cases").innerHTML =
+html;
 
 }
 
 
 
-/* SECURITY / DISPLAY HELPER */
+/* UNIQUE OPTIONS */
+
+function uniqueOptions(field) {
+
+const values =
+[...new Set(
+
+allCases
+.map(c => c[field])
+.filter(Boolean)
+
+)]
+
+
+.sort();
+
+
+return values.map(function(value) {
+
+return `
+<option value="${escapeHtml(value)}">
+${escapeHtml(value)}
+</option>
+`;
+
+}).join("");
+
+}
+
+
+
+/* OPEN FILTER */
+
+function openFilter(field) {
+
+document.querySelectorAll(".filter-menu")
+.forEach(function(menu) {
+
+menu.style.display = "none";
+
+});
+
+
+const menu =
+document.getElementById(
+"filter-" + field
+);
+
+
+if (menu) {
+
+menu.style.display = "block";
+
+}
+
+}
+
+
+
+/* APPLY COLUMN FILTER */
+
+function applyColumnFilter(field) {
+
+const input =
+document.getElementById(
+"input-" + field
+);
+
+
+if (!input) return;
+
+
+activeFilters[field] =
+input.value
+.toLowerCase()
+.trim();
+
+
+applyFilters();
+
+}
+
+
+
+/* APPLY ALL FILTERS */
+
+function applyFilters() {
+
+const globalSearch =
+document.getElementById("globalSearch")
+.value
+.toLowerCase()
+.trim();
+
+
+const filtered =
+allCases.filter(function(c) {
+
+
+if (
+globalSearch &&
+![
+c.loan_no,
+c.first_party,
+c.second_party,
+c.case_no,
+c.cnr_number
+]
+.join(" ")
+.toLowerCase()
+.includes(globalSearch)
+) {
+
+return false;
+
+}
+
+
+for (const field in activeFilters) {
+
+const filterValue =
+activeFilters[field];
+
+
+if (!filterValue) continue;
+
+
+const caseValue =
+String(c[field] || "")
+.toLowerCase();
+
+
+if (!caseValue.includes(filterValue)) {
+
+return false;
+
+}
+
+}
+
+
+return true;
+
+});
+
+
+displayCases(filtered);
+
+}
+
+
+
+/* CLEAR FILTERS */
+
+function clearFilters() {
+
+activeFilters = {};
+
+document.getElementById("globalSearch").value = "";
+
+displayCases(allCases);
+
+}
+
+
+
+/* ESCAPE HTML */
 
 function escapeHtml(value) {
 
-    if (value === null || value === undefined) {
-        return "";
-    }
+if (
+value === null ||
+value === undefined
+) {
 
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+return "";
+
+}
+
+return String(value)
+
+.replace(/&/g, "&amp;")
+
+.replace(/</g, "&lt;")
+
+.replace(/>/g, "&gt;")
+
+.replace(/"/g, "&quot;")
+
+.replace(/'/g, "&#039;");
 
 }
 
@@ -1152,16 +1008,16 @@ function escapeHtml(value) {
 
 function logout() {
 
-    localStorage.removeItem("access_token");
+localStorage.removeItem("access_token");
 
-    document.getElementById("system").style.display =
-        "none";
+document.getElementById("system").style.display =
+"none";
 
-    document.getElementById("login").style.display =
-        "block";
+document.getElementById("login").style.display =
+"block";
 
-    document.getElementById("cases").innerHTML =
-        "";
+document.getElementById("cases").innerHTML =
+"";
 
 }
 
