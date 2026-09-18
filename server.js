@@ -3,7 +3,10 @@ const http = require("http");
 const PORT = process.env.PORT || 10000;
 
 const server = http.createServer((req, res) => {
-  if (req.url === "/health") {
+  const url = new URL(req.url, `http://${req.headers.host || "localhost"}`);
+
+  // Health check
+  if (url.pathname === "/health") {
     res.writeHead(200, {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*"
@@ -16,7 +19,23 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  if (req.url === "/") {
+  // Backend connection test
+  if (url.pathname === "/api/test") {
+    res.writeHead(200, {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    });
+
+    res.end(JSON.stringify({
+      status: "success",
+      message: "Website successfully connected to Pratam Legal Backend"
+    }));
+
+    return;
+  }
+
+  // Home
+  if (url.pathname === "/") {
     res.writeHead(200, {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*"
@@ -30,6 +49,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // Not found
   res.writeHead(404, {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*"
