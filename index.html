@@ -788,7 +788,8 @@ ${escapeHtml(c.next_date)}
         '${encodeURIComponent(c.case_no || '')}',
         '${encodeURIComponent(c.first_party || '')}',
         '${encodeURIComponent(c.second_party || '')}',
-        '${encodeURIComponent(c.advocate || '')}'
+        '${encodeURIComponent(c.advocate || '')}',
+        '${encodeURIComponent(c.court_name || '')}'
     )">
         🔎 eCourts
     </button>
@@ -1058,20 +1059,335 @@ return String(value)
 }
 
 
-function openECourts(caseNo, firstParty, secondParty, advocate) {
+function openECourts(caseNo, firstParty, secondParty, advocate, courtName) {
 
-    const url = "https://services.ecourts.gov.in/ecourtindia_v6/casestatus/";
+    const decodedCaseNo = decodeURIComponent(caseNo);
+    const decodedFirstParty = decodeURIComponent(firstParty);
+    const decodedSecondParty = decodeURIComponent(secondParty);
+    const decodedAdvocate = decodeURIComponent(advocate);
+    const decodedCourtName = decodeURIComponent(courtName);
 
-    window.open(url, "_blank");
+    let caseType = "";
+    let caseNumber = "";
+    let caseYear = "";
 
-    alert(
-        "eCourts opened.\n\n" +
-        "Case No.: " + decodeURIComponent(caseNo) + "\n" +
-        "First Party: " + decodeURIComponent(firstParty) + "\n" +
-        "Second Party: " + decodeURIComponent(secondParty) + "\n" +
-        "Advocate: " + decodeURIComponent(advocate) + "\n\n" +
-        "Please use these details to search the case on eCourts and enter the CAPTCHA manually."
+    /*
+     * Example:
+     * SCC no.90757/2024
+     *
+     * Case Type = SCC
+     * Case Number = 90757
+     * Year = 2024
+     */
+
+    const match = decodedCaseNo.match(
+        /^([A-Za-z]+)\s*(?:no\.?|number)?\s*\.?\s*(\d+)\s*\/\s*(\d{4})$/i
     );
+
+    if (match) {
+
+        caseType = match[1].toUpperCase();
+        caseNumber = match[2];
+        caseYear = match[3];
+
+    } else {
+
+        alert(
+            "Unable to automatically identify Case Type, Case Number and Year from:\n\n" +
+            decodedCaseNo +
+            "\n\nPlease check the Case No. format in the Legal MIS."
+        );
+
+        return;
+    }
+
+
+    const assistantWindow = window.open("", "_blank");
+
+    if (!assistantWindow) {
+
+        alert(
+            "Please allow pop-ups for the Legal Case Management System."
+        );
+
+        return;
+    }
+
+
+    assistantWindow.document.write(`
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>eCourts Search Assistant</title>
+
+<style>
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    background: #f4f6f8;
+
+    margin: 0;
+
+    padding: 30px;
+
+}
+
+.container {
+
+    max-width: 700px;
+
+    margin: auto;
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+
+}
+
+h1 {
+
+    color: #1f4e78;
+
+    margin-top: 0;
+
+}
+
+.case-details {
+
+    background: #f1f5f9;
+
+    padding: 20px;
+
+    border-radius: 8px;
+
+    margin-bottom: 20px;
+
+}
+
+.row {
+
+    margin-bottom: 12px;
+
+}
+
+.label {
+
+    font-weight: bold;
+
+    color: #555;
+
+}
+
+.value {
+
+    color: #111;
+
+}
+
+button {
+
+    background: #1f4e78;
+
+    color: white;
+
+    border: none;
+
+    padding: 12px 20px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+}
+
+button:hover {
+
+    background: #163a5c;
+
+}
+
+.note {
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    background: #fff7ed;
+
+    border-left: 4px solid #f97316;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+<h1>eCourts Search Assistant</h1>
+
+
+<div class="case-details">
+
+
+<div class="row">
+
+<span class="label">
+Case Type:
+</span>
+
+<span class="value">
+${caseType}
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="label">
+Case Number:
+</span>
+
+<span class="value">
+${caseNumber}
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="label">
+Registration Year:
+</span>
+
+<span class="value">
+${caseYear}
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="label">
+Court:
+</span>
+
+<span class="value">
+${escapeHtml(decodedCourtName)}
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="label">
+First Party:
+</span>
+
+<span class="value">
+${escapeHtml(decodedFirstParty)}
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="label">
+Second Party:
+</span>
+
+<span class="value">
+${escapeHtml(decodedSecondParty)}
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="label">
+Advocate:
+</span>
+
+<span class="value">
+${escapeHtml(decodedAdvocate)}
+</span>
+
+</div>
+
+
+</div>
+
+
+<button onclick="window.open(
+'https://services.ecourts.gov.in/ecourtindia_v6/casestatus/',
+'_blank'
+)">
+
+Open Official eCourts
+
+</button>
+
+
+<div class="note">
+
+<strong>Instructions:</strong>
+
+<br><br>
+
+1. Click <strong>Open Official eCourts</strong>.
+
+<br><br>
+
+2. Select <strong>Case Number</strong> under Case Status.
+
+<br><br>
+
+3. Enter the Case Type, Case Number and Registration Year shown above.
+
+<br><br>
+
+4. Enter the CAPTCHA manually.
+
+<br><br>
+
+5. Click <strong>Go</strong> on eCourts.
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>
+
+`);
+
+    assistantWindow.document.close();
+
 }
 /* LOGOUT */
 
