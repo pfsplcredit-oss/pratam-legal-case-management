@@ -3,22 +3,29 @@ const http = require("http");
 const PORT = process.env.PORT || 10000;
 
 const server = http.createServer((req, res) => {
-  if (req.url === "/" || req.url === "/health") {
+  if (req.url === "/health") {
     res.writeHead(200, {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*"
     });
 
-    if (req.url === "/") {
-      res.end(JSON.stringify({
-        status: "ok",
-        message: "Pratam Legal Case Management Backend is running"
-      }));
-    } else {
-      res.end(JSON.stringify({
-        status: "healthy"
-      }));
-    }
+    res.end(JSON.stringify({
+      status: "healthy"
+    }));
+
+    return;
+  }
+
+  if (req.url === "/") {
+    res.writeHead(200, {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    });
+
+    res.end(JSON.stringify({
+      status: "ok",
+      message: "Pratam Legal Case Management Backend is running"
+    }));
 
     return;
   }
