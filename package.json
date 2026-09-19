@@ -1,0 +1,15 @@
+{
+  "name": "pratam-legal-case-management",
+  "version": "1.0.0",
+  "description": "Pratam Finserv Legal Case Management Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "playwright": "^1.55.0"
+  },
+  "engines": {
+    "node": ">=22 <25"
+  }
+}
