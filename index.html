@@ -191,11 +191,8 @@ placeholder="Password"
 <button onclick="login()">Login</button>
 
 <p id="loginMessage"></p>
-<button onclick="testECourtsBackend()" style="margin-top:10px;">
-    Test eCourts Backend
-</button>
 
-<p id="ecourtsTestMessage"></p>
+
 </div>
 
 
@@ -1394,60 +1391,7 @@ Open Official eCourts
     assistantWindow.document.close();
 
 }
-async function testECourtsBackend() {
 
-    const message =
-        document.getElementById("ecourtsTestMessage");
-
-    message.textContent =
-        "Testing eCourts backend...";
-
-    try {
-
-        const response =
-            await fetch(
-                `${BACKEND_URL}/api/ecourts/search`,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        cnr: "MHAU019999992015"
-                    })
-                }
-            );
-
-        const data =
-            await response.json();
-
-        if (response.ok) {
-
-            message.textContent =
-                "Success: " +
-                data.message +
-                " | CNR: " +
-                data.cnr;
-
-        } else {
-
-            message.textContent =
-                "Error: " +
-                (data.message ||
-                "Backend error");
-
-        }
-
-    } catch (error) {
-
-        message.textContent =
-            "Connection error: " +
-            error.message;
-
-    }
-}
 /* LOGOUT */
 
 function logout() {
