@@ -22,7 +22,8 @@ function sendJson(res, statusCode, data) {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin":
       "https://pfsplcredit-oss.github.io",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Methods":
+      "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers":
       "Content-Type, Authorization"
   });
@@ -146,7 +147,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   /*
-   * TEST PLAYWRIGHT
+   * PLAYWRIGHT TEST
    */
   if (
     url.pathname === "/api/playwright-test" &&
@@ -258,6 +259,7 @@ const server = http.createServer(async (req, res) => {
           message:
             "Invalid JSON request"
         });
+
       }
 
     });
@@ -299,6 +301,41 @@ const server = http.createServer(async (req, res) => {
       const pageText =
         await page.locator("body").innerText();
 
+      /*
+       * FIND INPUT FIELDS
+       */
+      const inputs =
+        await page.locator("input").evaluateAll(
+          elements =>
+            elements.map(el => ({
+              name: el.name,
+              id: el.id,
+              type: el.type,
+              placeholder: el.placeholder
+            }))
+        );
+
+      /*
+       * FIND BUTTONS
+       */
+      const buttons =
+        await page
+          .locator(
+            "button, input[type='submit']"
+          )
+          .evaluateAll(
+            elements =>
+              elements.map(el => ({
+                text:
+                  el.innerText ||
+                  el.value ||
+                  "",
+                id: el.id,
+                name: el.name,
+                type: el.type
+              }))
+          );
+
       await browser.close();
 
       sendJson(res, 200, {
@@ -307,7 +344,9 @@ const server = http.createServer(async (req, res) => {
           "Playwright successfully opened eCourts",
         page_title: title,
         page_text:
-          pageText.substring(0, 3000)
+          pageText.substring(0, 3000),
+        inputs: inputs,
+        buttons: buttons
       });
 
       return;
