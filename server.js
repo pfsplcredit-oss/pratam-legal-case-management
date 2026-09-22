@@ -5,7 +5,8 @@ const { createClient } = require("@supabase/supabase-js");
 const PORT = process.env.PORT || 10000;
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_SERVICE_ROLE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
   console.error("Supabase environment variables are missing.");
@@ -39,7 +40,7 @@ const server = http.createServer(async (req, res) => {
   );
 
   /*
-   * CORS OPTIONS
+   * CORS
    */
   if (req.method === "OPTIONS") {
     res.writeHead(204, {
@@ -68,7 +69,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   /*
-   * HEALTH CHECK
+   * HEALTH
    */
   if (url.pathname === "/health") {
     sendJson(res, 200, {
@@ -78,7 +79,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   /*
-   * CONNECTION TEST
+   * TEST CONNECTION
    */
   if (url.pathname === "/api/test") {
     sendJson(res, 200, {
@@ -90,13 +91,12 @@ const server = http.createServer(async (req, res) => {
   }
 
   /*
-   * GET LEGAL CASES FROM SUPABASE
+   * GET LEGAL CASES
    */
   if (
     url.pathname === "/api/cases" &&
     req.method === "GET"
   ) {
-
     try {
 
       const { data, error } = await supabase
@@ -104,19 +104,12 @@ const server = http.createServer(async (req, res) => {
         .select("*");
 
       if (error) {
-
-        console.error(
-          "Supabase error:",
-          error
-        );
-
         sendJson(res, 500, {
           status: "error",
           message:
             "Unable to retrieve legal cases",
           error: error.message
         });
-
         return;
       }
 
@@ -129,11 +122,6 @@ const server = http.createServer(async (req, res) => {
       return;
 
     } catch (error) {
-
-      console.error(
-        "Server error:",
-        error
-      );
 
       sendJson(res, 500, {
         status: "error",
@@ -175,18 +163,13 @@ const server = http.createServer(async (req, res) => {
 
       const title = await page.title();
 
-      const pageText =
-        await page.locator("body").innerText();
-
       await browser.close();
 
       sendJson(res, 200, {
         status: "success",
         message:
           "Playwright successfully opened example.com",
-        page_title: title,
-        page_text:
-          pageText.substring(0, 3000)
+        page_title: title
       });
 
       return;
@@ -209,66 +192,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   /*
-   * eCourts CNR ENDPOINT
-   */
-  if (
-    url.pathname === "/api/ecourts/search" &&
-    req.method === "POST"
-  ) {
-
-    let body = "";
-
-    req.on("data", chunk => {
-      body += chunk;
-    });
-
-    req.on("end", () => {
-
-      try {
-
-        const data =
-          JSON.parse(body || "{}");
-
-        const cnr =
-          String(data.cnr || "")
-            .trim()
-            .toUpperCase();
-
-        if (!cnr) {
-
-          sendJson(res, 400, {
-            status: "error",
-            message:
-              "CNR number is required"
-          });
-
-          return;
-        }
-
-        sendJson(res, 200, {
-          status: "success",
-          message:
-            "CNR received successfully",
-          cnr: cnr
-        });
-
-      } catch (error) {
-
-        sendJson(res, 400, {
-          status: "error",
-          message:
-            "Invalid JSON request"
-        });
-
-      }
-
-    });
-
-    return;
-  }
-
-  /*
-   * TEST ECOURTS WITH PLAYWRIGHT
+   * ECOURTS TEST
    */
   if (
     url.pathname === "/api/ecourts-test" &&
@@ -284,8 +208,7 @@ const server = http.createServer(async (req, res) => {
         args: ["--no-sandbox"]
       });
 
-      const page =
-        await browser.newPage();
+      const page = await browser.newPage();
 
       await page.goto(
         "https://services.ecourts.gov.in/ecourtindia_v6/",
@@ -295,15 +218,11 @@ const server = http.createServer(async (req, res) => {
         }
       );
 
-      const title =
-        await page.title();
+      const title = await page.title();
 
       const pageText =
         await page.locator("body").innerText();
 
-      /*
-       * FIND INPUT FIELDS
-       */
       const inputs =
         await page.locator("input").evaluateAll(
           elements =>
@@ -315,9 +234,6 @@ const server = http.createServer(async (req, res) => {
             }))
         );
 
-      /*
-       * FIND BUTTONS
-       */
       const buttons =
         await page
           .locator(
@@ -361,6 +277,129 @@ const server = http.createServer(async (req, res) => {
         status: "error",
         message:
           "Unable to open eCourts with Playwright",
+        error: error.message
+      });
+
+      return;
+    }
+  }
+
+  /*
+   * ECOURTS CNR FILL TEST
+   *
+   * This fills only the CNR field.
+   * CAPTCHA is NOT bypassed.
+   * Search is NOT clicked.
+   */
+  if (
+    url.pathname === "/api/ecourts-fill-cnr" &&
+    req.method === "GET"
+  ) {
+
+    const cnr =
+      String(url.searchParams.get("cnr") || "")
+        .trim()
+        .toUpperCase();
+
+    if (!cnr) {
+      sendJson(res, 400, {
+        status: "error",
+        message:
+          "Please provide a CNR number."
+      });
+
+      return;
+    }
+
+    if (!/^[A-Z0-9]{16}$/.test(cnr)) {
+      sendJson(res, 400, {
+        status: "error",
+        message:
+          "CNR must contain exactly 16 letters/numbers.",
+        cnr: cnr
+      });
+
+      return;
+    }
+
+    let browser;
+
+    try {
+
+      browser = await chromium.launch({
+        headless: true,
+        args: ["--no-sandbox"]
+      });
+
+      const page = await browser.newPage();
+
+      await page.goto(
+        "https://services.ecourts.gov.in/ecourtindia_v6/",
+        {
+          waitUntil: "domcontentloaded",
+          timeout: 60000
+        }
+      );
+
+      /*
+       * Fill CNR field.
+       */
+      await page
+        .locator("#cino")
+        .fill(cnr);
+
+      /*
+       * Read back the value to confirm
+       * that the field was filled.
+       */
+      const enteredCnr =
+        await page
+          .locator("#cino")
+          .inputValue();
+
+      /*
+       * Confirm CAPTCHA field exists.
+       */
+      const captchaExists =
+        await page
+          .locator("#fcaptcha_code")
+          .count();
+
+      /*
+       * Confirm Search button exists.
+       */
+      const searchButtonExists =
+        await page
+          .locator("#searchbtn")
+          .count();
+
+      await browser.close();
+
+      sendJson(res, 200, {
+        status: "success",
+        message:
+          "CNR was successfully entered into the eCourts CNR field.",
+        cnr: enteredCnr,
+        captcha_field_found:
+          captchaExists > 0,
+        search_button_found:
+          searchButtonExists > 0,
+        next_action:
+          "CAPTCHA must be entered manually. Search was not clicked."
+      });
+
+      return;
+
+    } catch (error) {
+
+      if (browser) {
+        await browser.close().catch(() => {});
+      }
+
+      sendJson(res, 500, {
+        status: "error",
+        message:
+          "Unable to fill CNR on eCourts.",
         error: error.message
       });
 
