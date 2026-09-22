@@ -146,14 +146,15 @@ const server = http.createServer(async (req, res) => {
       });
 
       const title = await page.title();
-
+const pageText = await page.locator("body").innerText();
       await browser.close();
 
       sendJson(res, 200, {
-        status: "success",
-        message: "Playwright Chromium launched successfully",
-        page_title: title
-      });
+  status: "success",
+  message: "Playwright successfully opened eCourts",
+  page_title: title,
+  page_text: pageText.substring(0, 3000)
+});
 
       return;
 
