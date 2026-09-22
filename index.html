@@ -192,7 +192,6 @@ placeholder="Password"
 
 <p id="loginMessage"></p>
 
-
 </div>
 
 
@@ -251,8 +250,11 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_UbXEMo3CGKj6LbSu98xfFg_rvf2-kn_";
 
+
 const BACKEND_URL =
 "https://pratam-legal-case-management.onrender.com";
+
+
 let allCases = [];
 
 let activeFilters = {};
@@ -339,6 +341,7 @@ await fetch(
 BACKEND_URL +
 "/api/cases"
 );
+
 
 const cases =
 await response.json();
@@ -728,6 +731,11 @@ Apply
 </th>
 
 
+<th>
+Actions
+</th>
+
+
 </tr>
 
 </thead>
@@ -775,19 +783,23 @@ ${escapeHtml(c.next_date)}
 <td>${escapeHtml(c.act)}</td>
 
 <td>${escapeHtml(c.section)}</td>
+
 <td>
-    <button onclick="openECourts(
-        '${encodeURIComponent(c.case_no || '')}',
-        '${encodeURIComponent(c.first_party || '')}',
-        '${encodeURIComponent(c.second_party || '')}',
-        '${encodeURIComponent(c.advocate || '')}',
-        '${encodeURIComponent(c.court_name || '')}'
-    )">
-        🔎 eCourts
-    </button>
+
+<button onclick="openECourts(
+    '${encodeURIComponent(c.case_no || '')}',
+    '${encodeURIComponent(c.first_party || '')}',
+    '${encodeURIComponent(c.second_party || '')}',
+    '${encodeURIComponent(c.advocate || '')}',
+    '${encodeURIComponent(c.court_name || '')}'
+)">
+    🔎 eCourts
+</button>
+
 <button onclick="updateECourts('${c.id}')">
     🔄 Update eCourts
-</button>    
+</button>
+
 </td>
 
 </tr>
@@ -827,7 +839,6 @@ allCases
 .filter(Boolean)
 
 )]
-
 
 .sort();
 
@@ -977,7 +988,9 @@ function applyFilters() {
                 caseValue === null ||
                 caseValue === undefined
             ) {
+
                 return false;
+
             }
 
 
@@ -1013,6 +1026,10 @@ function applyFilters() {
     displayCases(filtered);
 
 }
+
+
+
+/* CLEAR FILTERS */
 
 function clearFilters() {
 
@@ -1053,6 +1070,9 @@ return String(value)
 
 }
 
+
+
+/* OPEN ECOURTS */
 
 function openECourts(caseNo, firstParty, secondParty, advocate, courtName) {
 
@@ -1384,6 +1404,9 @@ Open Official eCourts
     assistantWindow.document.close();
 
 }
+
+
+
 /* UPDATE ECOURTS */
 
 async function updateECourts(id) {
@@ -1403,25 +1426,122 @@ async function updateECourts(id) {
 
         alert(
             "CNR number is not available for this case.\n\n" +
-            "Please enter the CNR first."
+            "Please enter the CNR in the Legal MIS first."
         );
 
         return;
     }
 
-    alert(
-    "eCourts Update\n\n" +
-    "CNR: " + caseData.cnr_number +
-    "\n\n" +
-    "Please use this CNR on the eCourts CNR Search page.\n" +
-    "Enter the CAPTCHA manually."
-);
+    const cnr = String(caseData.cnr_number)
+        .trim()
+        .toUpperCase();
 
-    window.open(
-        "https://services.ecourts.gov.in/ecourtindia_v6/",
-        "_blank"
-    );
+    /*
+     * Validate CNR
+     */
+
+    if (!/^[A-Z0-9]{16}$/.test(cnr)) {
+
+        alert(
+            "Invalid CNR number.\n\n" +
+            "CNR: " + cnr +
+            "\n\n" +
+            "A valid CNR must contain exactly 16 letters/numbers."
+        );
+
+        return;
+    }
+
+    /*
+     * Copy CNR to clipboard
+     */
+
+    let copied = false;
+
+    try {
+
+        await navigator.clipboard.writeText(cnr);
+
+        copied = true;
+
+    } catch (error) {
+
+        console.log(
+            "Clipboard copy was not available:",
+            error
+        );
+
+        copied = false;
+    }
+
+    /*
+     * Open official eCourts
+     */
+
+    const ecourtsUrl =
+        "https://services.ecourts.gov.in/ecourtindia_v6/";
+
+    const ecourtsWindow =
+        window.open(
+            ecourtsUrl,
+            "_blank"
+        );
+
+    /*
+     * Pop-up blocked
+     */
+
+    if (!ecourtsWindow) {
+
+        alert(
+            "Please allow pop-ups for the Legal Case Management System."
+        );
+
+        return;
+    }
+
+    /*
+     * Show instructions
+     */
+
+    if (copied) {
+
+        alert(
+            "eCourts opened successfully.\n\n" +
+
+            "CNR:\n" +
+            cnr +
+            "\n\n" +
+
+            "The CNR has been copied to your clipboard.\n\n" +
+
+            "On eCourts:\n" +
+            "1. Open CNR Number search.\n" +
+            "2. Paste the CNR.\n" +
+            "3. Enter the CAPTCHA manually.\n" +
+            "4. Click Search.\n\n" +
+
+            "CAPTCHA is intentionally left manual."
+        );
+
+    } else {
+
+        alert(
+            "eCourts opened successfully.\n\n" +
+
+            "CNR:\n" +
+            cnr +
+            "\n\n" +
+
+            "Please copy the CNR above and enter it on the eCourts CNR search page.\n\n" +
+
+            "Then enter the CAPTCHA manually and click Search."
+        );
+    }
 }
+
+
+
 /* LOGOUT */
 
 function logout() {
