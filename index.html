@@ -1384,7 +1384,44 @@ Open Official eCourts
     assistantWindow.document.close();
 
 }
+/* UPDATE ECOURTS */
 
+async function updateECourts(id) {
+
+    const caseData = allCases.find(
+        c => String(c.id) === String(id)
+    );
+
+    if (!caseData) {
+
+        alert("Case not found.");
+
+        return;
+    }
+
+    if (!caseData.cnr_number) {
+
+        alert(
+            "CNR number is not available for this case.\n\n" +
+            "Please enter the CNR first."
+        );
+
+        return;
+    }
+
+    alert(
+        "eCourts Update\n\n" +
+        "CNR: " + caseData.cnr_number +
+        "\n\n" +
+        "The eCourts page will now open.\n" +
+        "Please complete the CAPTCHA manually."
+    );
+
+    window.open(
+        "https://services.ecourts.gov.in/ecourtindia_v6/casestatus/",
+        "_blank"
+    );
+}
 /* LOGOUT */
 
 function logout() {
