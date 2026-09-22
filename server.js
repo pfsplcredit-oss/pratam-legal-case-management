@@ -20,9 +20,11 @@ const supabase = createClient(
 function sendJson(res, statusCode, data) {
   res.writeHead(statusCode, {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "https://pfsplcredit-oss.github.io",
+    "Access-Control-Allow-Origin":
+      "https://pfsplcredit-oss.github.io",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization"
+    "Access-Control-Allow-Headers":
+      "Content-Type, Authorization"
   });
 
   res.end(JSON.stringify(data));
@@ -35,11 +37,17 @@ const server = http.createServer(async (req, res) => {
     `http://${req.headers.host || "localhost"}`
   );
 
+  /*
+   * CORS OPTIONS
+   */
   if (req.method === "OPTIONS") {
     res.writeHead(204, {
-      "Access-Control-Allow-Origin": "https://pfsplcredit-oss.github.io",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization"
+      "Access-Control-Allow-Origin":
+        "https://pfsplcredit-oss.github.io",
+      "Access-Control-Allow-Methods":
+        "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers":
+        "Content-Type, Authorization"
     });
 
     res.end();
@@ -52,7 +60,8 @@ const server = http.createServer(async (req, res) => {
   if (url.pathname === "/") {
     sendJson(res, 200, {
       status: "ok",
-      message: "Pratam Legal Case Management Backend is running"
+      message:
+        "Pratam Legal Case Management Backend is running"
     });
     return;
   }
@@ -73,7 +82,8 @@ const server = http.createServer(async (req, res) => {
   if (url.pathname === "/api/test") {
     sendJson(res, 200, {
       status: "success",
-      message: "Website successfully connected to Pratam Legal Backend"
+      message:
+        "Website successfully connected to Pratam Legal Backend"
     });
     return;
   }
@@ -81,21 +91,28 @@ const server = http.createServer(async (req, res) => {
   /*
    * GET LEGAL CASES FROM SUPABASE
    */
-  if (url.pathname === "/api/cases" && req.method === "GET") {
+  if (
+    url.pathname === "/api/cases" &&
+    req.method === "GET"
+  ) {
 
     try {
 
       const { data, error } = await supabase
         .from("legal_cases")
-        .select("*")
-        
+        .select("*");
 
       if (error) {
-        console.error("Supabase error:", error);
+
+        console.error(
+          "Supabase error:",
+          error
+        );
 
         sendJson(res, 500, {
           status: "error",
-          message: "Unable to retrieve legal cases",
+          message:
+            "Unable to retrieve legal cases",
           error: error.message
         });
 
@@ -112,11 +129,15 @@ const server = http.createServer(async (req, res) => {
 
     } catch (error) {
 
-      console.error("Server error:", error);
+      console.error(
+        "Server error:",
+        error
+      );
 
       sendJson(res, 500, {
         status: "error",
-        message: "Server error while retrieving legal cases",
+        message:
+          "Server error while retrieving legal cases",
         error: error.message
       });
 
@@ -127,7 +148,10 @@ const server = http.createServer(async (req, res) => {
   /*
    * TEST PLAYWRIGHT
    */
-  if (url.pathname === "/api/playwright-test") {
+  if (
+    url.pathname === "/api/playwright-test" &&
+    req.method === "GET"
+  ) {
 
     let browser;
 
@@ -140,24 +164,29 @@ const server = http.createServer(async (req, res) => {
 
       const page = await browser.newPage();
 
-      await page.goto("https://example.com", {
-        waitUntil: "domcontentloaded",
-        timeout: 30000
+      await page.goto(
+        "https://example.com",
+        {
+          waitUntil: "domcontentloaded",
+          timeout: 30000
+        }
+      );
+
+      const title = await page.title();
+
+      const pageText =
+        await page.locator("body").innerText();
+
+      await browser.close();
+
+      sendJson(res, 200, {
+        status: "success",
+        message:
+          "Playwright successfully opened example.com",
+        page_title: title,
+        page_text:
+          pageText.substring(0, 3000)
       });
-
-const title = await page.title();
-const pageText = await page.locator("body").innerText();
-
-await browser.close();
-
-sendJson(res, 200, {
-  status: "success",
-  message: "Playwright successfully opened eCourts",
-  page_title: title,
-  page_text: pageText.substring(0, 3000)
-});
-  page_text: pageText.substring(0, 3000)
-});
 
       return;
 
@@ -169,7 +198,8 @@ sendJson(res, 200, {
 
       sendJson(res, 500, {
         status: "error",
-        message: "Playwright Chromium failed to launch",
+        message:
+          "Playwright Chromium failed to launch",
         error: error.message
       });
 
@@ -178,7 +208,7 @@ sendJson(res, 200, {
   }
 
   /*
-   * eCourts CNR endpoint
+   * eCourts CNR ENDPOINT
    */
   if (
     url.pathname === "/api/ecourts/search" &&
@@ -195,23 +225,29 @@ sendJson(res, 200, {
 
       try {
 
-        const data = JSON.parse(body || "{}");
+        const data =
+          JSON.parse(body || "{}");
 
-        const cnr = String(data.cnr || "")
-          .trim()
-          .toUpperCase();
+        const cnr =
+          String(data.cnr || "")
+            .trim()
+            .toUpperCase();
 
         if (!cnr) {
+
           sendJson(res, 400, {
             status: "error",
-            message: "CNR number is required"
+            message:
+              "CNR number is required"
           });
+
           return;
         }
 
         sendJson(res, 200, {
           status: "success",
-          message: "CNR received successfully",
+          message:
+            "CNR received successfully",
           cnr: cnr
         });
 
@@ -219,9 +255,9 @@ sendJson(res, 200, {
 
         sendJson(res, 400, {
           status: "error",
-          message: "Invalid JSON request"
+          message:
+            "Invalid JSON request"
         });
-
       }
 
     });
@@ -230,69 +266,84 @@ sendJson(res, 200, {
   }
 
   /*
- * TEST ECOURTS WITH PLAYWRIGHT
- */
-if (
-  url.pathname === "/api/ecourts-test" &&
-  req.method === "GET"
-) {
+   * TEST ECOURTS WITH PLAYWRIGHT
+   */
+  if (
+    url.pathname === "/api/ecourts-test" &&
+    req.method === "GET"
+  ) {
 
-  let browser;
+    let browser;
 
-  try {
+    try {
 
-    browser = await chromium.launch({
-      headless: true,
-      args: ["--no-sandbox"]
-    });
+      browser = await chromium.launch({
+        headless: true,
+        args: ["--no-sandbox"]
+      });
 
-    const page = await browser.newPage();
+      const page =
+        await browser.newPage();
 
-    await page.goto(
-      "https://services.ecourts.gov.in/ecourtindia_v6/",
-      {
-        waitUntil: "domcontentloaded",
-        timeout: 60000
+      await page.goto(
+        "https://services.ecourts.gov.in/ecourtindia_v6/",
+        {
+          waitUntil: "domcontentloaded",
+          timeout: 60000
+        }
+      );
+
+      const title =
+        await page.title();
+
+      const pageText =
+        await page.locator("body").innerText();
+
+      await browser.close();
+
+      sendJson(res, 200, {
+        status: "success",
+        message:
+          "Playwright successfully opened eCourts",
+        page_title: title,
+        page_text:
+          pageText.substring(0, 3000)
+      });
+
+      return;
+
+    } catch (error) {
+
+      if (browser) {
+        await browser.close().catch(() => {});
       }
-    );
 
-    const title = await page.title();
+      sendJson(res, 500, {
+        status: "error",
+        message:
+          "Unable to open eCourts with Playwright",
+        error: error.message
+      });
 
-    await browser.close();
-
-    sendJson(res, 200, {
-      status: "success",
-      message: "Playwright successfully opened eCourts",
-      page_title: title
-    });
-
-    return;
-
-  } catch (error) {
-
-    if (browser) {
-      await browser.close().catch(() => {});
+      return;
     }
-
-    sendJson(res, 500, {
-      status: "error",
-      message: "Unable to open eCourts with Playwright",
-      error: error.message
-    });
-
-    return;
   }
-}
-     /*
+
+  /*
    * UNKNOWN ROUTE
    */
   sendJson(res, 404, {
     error: "Not found"
   });
+
 });
 
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(
-    `Pratam Legal Backend running on port ${PORT}`
-  );
-});
+server.listen(
+  PORT,
+  "0.0.0.0",
+  () => {
+    console.log(
+      `Pratam Legal Backend running on port ${PORT}`
+    );
+  }
+);
