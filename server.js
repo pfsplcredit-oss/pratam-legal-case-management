@@ -226,6 +226,60 @@ const server = http.createServer(async (req, res) => {
   }
 
   /*
+ * TEST ECOURTS WITH PLAYWRIGHT
+ */
+if (
+  url.pathname === "/api/ecourts-test" &&
+  req.method === "GET"
+) {
+
+  let browser;
+
+  try {
+
+    browser = await chromium.launch({
+      headless: true,
+      args: ["--no-sandbox"]
+    });
+
+    const page = await browser.newPage();
+
+    await page.goto(
+      "https://services.ecourts.gov.in/ecourtindia_v6/",
+      {
+        waitUntil: "domcontentloaded",
+        timeout: 60000
+      }
+    );
+
+    const title = await page.title();
+
+    await browser.close();
+
+    sendJson(res, 200, {
+      status: "success",
+      message: "Playwright successfully opened eCourts",
+      page_title: title
+    });
+
+    return;
+
+  } catch (error) {
+
+    if (browser) {
+      await browser.close().catch(() => {});
+    }
+
+    sendJson(res, 500, {
+      status: "error",
+      message: "Unable to open eCourts with Playwright",
+      error: error.message
+    });
+
+    return;
+  }
+}
+     /*
    * UNKNOWN ROUTE
    */
   sendJson(res, 404, {
