@@ -1,7 +1,21 @@
 const http = require("http");
 const { chromium } = require("playwright");
+const { createClient } = require("@supabase/supabase-js");
 
 const PORT = process.env.PORT || 10000;
+
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+  console.error("Supabase environment variables are missing.");
+  process.exit(1);
+}
+
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_SERVICE_ROLE_KEY
+);
 
 function sendJson(res, statusCode, data) {
   res.writeHead(statusCode, {
@@ -32,6 +46,20 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  /*
+   * HOME
+   */
+  if (url.pathname === "/") {
+    sendJson(res, 200, {
+      status: "ok",
+      message: "Pratam Legal Case Management Backend is running"
+    });
+    return;
+  }
+
+  /*
+   * HEALTH CHECK
+   */
   if (url.pathname === "/health") {
     sendJson(res, 200, {
       status: "healthy"
@@ -39,12 +67,61 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  /*
+   * CONNECTION TEST
+   */
   if (url.pathname === "/api/test") {
     sendJson(res, 200, {
       status: "success",
       message: "Website successfully connected to Pratam Legal Backend"
     });
     return;
+  }
+
+  /*
+   * GET LEGAL CASES FROM SUPABASE
+   */
+  if (url.pathname === "/api/cases" && req.method === "GET") {
+
+    try {
+
+      const { data, error } = await supabase
+        .from("legal_cases")
+        .select("*")
+        .order("id", { ascending: true });
+
+      if (error) {
+        console.error("Supabase error:", error);
+
+        sendJson(res, 500, {
+          status: "error",
+          message: "Unable to retrieve legal cases",
+          error: error.message
+        });
+
+        return;
+      }
+
+      sendJson(res, 200, {
+        status: "success",
+        count: data.length,
+        cases: data
+      });
+
+      return;
+
+    } catch (error) {
+
+      console.error("Server error:", error);
+
+      sendJson(res, 500, {
+        status: "error",
+        message: "Server error while retrieving legal cases",
+        error: error.message
+      });
+
+      return;
+    }
   }
 
   /*
@@ -148,14 +225,9 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (url.pathname === "/") {
-    sendJson(res, 200, {
-      status: "ok",
-      message: "Pratam Legal Case Management Backend is running"
-    });
-    return;
-  }
-
+  /*
+   * UNKNOWN ROUTE
+   */
   sendJson(res, 404, {
     error: "Not found"
   });
