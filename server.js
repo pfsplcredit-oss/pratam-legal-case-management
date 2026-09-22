@@ -88,7 +88,7 @@ const server = http.createServer(async (req, res) => {
       const { data, error } = await supabase
         .from("legal_cases")
         .select("*")
-        .order("id", { ascending: true });
+        
 
       if (error) {
         console.error("Supabase error:", error);
