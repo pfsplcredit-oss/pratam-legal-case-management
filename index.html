@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 
 <html>
-
 <head>
-
 <title>Pratam Legal Case Management System</title>
 
-<style>
+<!-- Excel Export Library -->
 
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+<style>
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -33,8 +34,6 @@ body {
     padding: 20px;
 }
 
-/* LOGIN */
-
 #login {
     width: 350px;
     margin: 80px auto;
@@ -50,8 +49,6 @@ body {
     margin-bottom: 10px;
 }
 
-/* BUTTONS */
-
 button {
     background: #1f4e78;
     color: white;
@@ -66,7 +63,13 @@ button:hover {
     background: #163a5c;
 }
 
-/* NAVIGATION */
+.excel-button {
+    background: #217346;
+}
+
+.excel-button:hover {
+    background: #185c37;
+}
 
 .navigation {
     background: white;
@@ -81,8 +84,6 @@ button:hover {
 .nav-button.active {
     background: #163a5c;
 }
-
-/* DASHBOARD */
 
 .dashboard {
     margin-bottom: 25px;
@@ -122,8 +123,6 @@ button:hover {
     font-size: 30px;
     font-weight: bold;
 }
-
-/* CHARTS */
 
 .charts-grid {
     display: grid;
@@ -174,8 +173,6 @@ button:hover {
     background: #163a5c;
 }
 
-/* HEARING */
-
 .hearing-panel {
     background: white;
     padding: 20px;
@@ -201,8 +198,6 @@ button:hover {
     color: #1f4e78;
 }
 
-/* SEARCH */
-
 .search-panel {
     background: white;
     padding: 20px;
@@ -217,8 +212,6 @@ button:hover {
     border-radius: 4px;
 }
 
-/* SUMMARY */
-
 .summary {
     background: white;
     padding: 15px;
@@ -226,8 +219,6 @@ button:hover {
     border-radius: 6px;
     font-weight: bold;
 }
-
-/* TABLE */
 
 .table-container {
     background: white;
@@ -247,7 +238,6 @@ th {
     padding: 10px;
     text-align: left;
     white-space: nowrap;
-    position: relative;
 }
 
 td {
@@ -260,59 +250,13 @@ tr:hover {
     background: #f1f5f9;
 }
 
-/* FILTER */
-
-.filter-button {
-    background: white;
-    color: #1f4e78;
-    padding: 3px 7px;
-    margin-left: 5px;
-    border-radius: 3px;
-}
-
-.filter-menu {
-    display: none;
-    position: absolute;
-    top: 38px;
-    left: 0;
-    background: white;
-    color: black;
-    padding: 10px;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    z-index: 1000;
-    min-width: 220px;
-}
-
-.filter-menu input,
-.filter-menu select {
-    width: 100%;
-    padding: 7px;
-    box-sizing: border-box;
-    margin-bottom: 7px;
-}
-
-.filter-menu button {
-    padding: 7px 10px;
-    margin: 2px;
-}
-
-/* OTHER */
-
 .no-data {
     background: white;
     padding: 20px;
     text-align: center;
 }
 
-.hidden {
-    display: none;
-}
-
-/* RESPONSIVE */
-
 @media (max-width: 1000px) {
-
     .dashboard-cards {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -324,9 +268,7 @@ tr:hover {
     .hearing-list {
         grid-template-columns: 1fr;
     }
-
 }
-
 </style>
 
 </head>
@@ -334,17 +276,13 @@ tr:hover {
 <body>
 
 <div class="header">
-
 <h1>Pratam Finserv</h1>
-
 <p>Legal Case Management System</p>
-
 </div>
 
 <!-- LOGIN -->
 
 <div id="login">
-
 <h2>Login</h2>
 
 <input
@@ -364,14 +302,11 @@ placeholder="Password"
 <button onclick="login()">Login</button>
 
 <p id="loginMessage"></p>
-
 </div>
 
 <!-- SYSTEM -->
 
 <div id="system" style="display:none;">
-
-<!-- NAVIGATION -->
 
 <div class="navigation">
 
@@ -390,6 +325,14 @@ onclick="showCases()"
 >
 
 📋 All Cases </button>
+
+<button
+class="excel-button"
+onclick="downloadLegalMIS()"
+
+>
+
+📥 Download Legal MIS Excel </button>
 
 <button onclick="logout()">
 Logout
@@ -413,131 +356,67 @@ Legal MIS Dashboard
 class="dashboard-card"
 onclick="filterByDashboard('all')"
 >
-
 <h3>Total Cases</h3>
-
-<div
-class="dashboard-number"
-id="totalCases"
->
-0
-</div>
-
+<div class="dashboard-number" id="totalCases">0</div>
 </div>
 
 <div
 class="dashboard-card"
 onclick="filterByDashboard('open')"
 >
-
 <h3>Open Cases</h3>
-
-<div
-class="dashboard-number"
-id="openCases"
->
-0
-</div>
-
+<div class="dashboard-number" id="openCases">0</div>
 </div>
 
 <div
 class="dashboard-card"
 onclick="filterByDashboard('closed')"
 >
-
 <h3>Closed Cases</h3>
-
-<div
-class="dashboard-number"
-id="closedCases"
->
-0
-</div>
-
+<div class="dashboard-number" id="closedCases">0</div>
 </div>
 
 <div
 class="dashboard-card"
 onclick="filterByDashboard('pending')"
 >
-
 <h3>Pending Cases</h3>
-
-<div
-class="dashboard-number"
-id="pendingCases"
->
-0
-</div>
-
+<div class="dashboard-number" id="pendingCases">0</div>
 </div>
 
 <div
 class="dashboard-card"
 onclick="showUpcomingHearings()"
 >
-
 <h3>Upcoming Hearings</h3>
-
-<div
-class="dashboard-number"
-id="upcomingCases"
->
-0
+<div class="dashboard-number" id="upcomingCases">0</div>
 </div>
 
 </div>
-
-</div>
-
-<!-- CHARTS -->
 
 <div class="charts-grid">
 
 <div class="chart-panel">
-
 <h3>Cases by Branch</h3>
-
-<div id="branchChart">
-Loading...
-</div>
-
+<div id="branchChart">Loading...</div>
 </div>
 
 <div class="chart-panel">
-
 <h3>Cases by Current Status</h3>
-
-<div id="statusChart">
-Loading...
-</div>
-
+<div id="statusChart">Loading...</div>
 </div>
 
 <div class="chart-panel">
-
 <h3>Cases by Stage</h3>
-
-<div id="stageChart">
-Loading...
-</div>
-
+<div id="stageChart">Loading...</div>
 </div>
 
 <div class="chart-panel">
-
 <h3>Cases by Advocate</h3>
-
-<div id="advocateChart">
-Loading...
+<div id="advocateChart">Loading...</div>
 </div>
 
 </div>
-
-</div>
-
-<!-- UPCOMING HEARINGS -->
 
 <div class="hearing-panel">
 
@@ -585,6 +464,14 @@ Clear Filters
 Show All Cases
 </button>
 
+<button
+class="excel-button"
+onclick="downloadLegalMIS()"
+
+>
+
+📥 Download Legal MIS Excel </button>
+
 </div>
 
 <div id="cases"></div>
@@ -592,28 +479,21 @@ Show All Cases
 </div>
 
 </div>
-
 </div>
 
 <script>
 
-
 const SUPABASE_URL =
 "https://tawykarkhepvtaxnxxjd.supabase.co";
-
 
 const SUPABASE_KEY =
 "sb_publishable_UbXEMo3CGKj6LbSu98xfFg_rvf2-kn_";
 
-
 const BACKEND_URL =
 "https://pratam-legal-case-management.onrender.com";
 
-
 let allCases = [];
-
 let activeFilters = {};
-
 
 /* LOGIN */
 
@@ -625,35 +505,25 @@ document.getElementById("email").value;
 const password =
 document.getElementById("password").value;
 
-
 try {
 
 const response = await fetch(
-
 SUPABASE_URL +
 "/auth/v1/token?grant_type=password",
-
 {
 method: "POST",
-
 headers: {
 "apikey": SUPABASE_KEY,
 "Content-Type": "application/json"
 },
-
 body: JSON.stringify({
 email: email,
 password: password
 })
-
 }
-
 );
 
-
-const data =
-await response.json();
-
+const data = await response.json();
 
 if (!response.ok) {
 
@@ -661,22 +531,18 @@ document.getElementById("loginMessage").innerText =
 "Login failed. Please check your email and password.";
 
 return;
-
 }
-
 
 localStorage.setItem(
 "access_token",
 data.access_token
 );
 
-
 document.getElementById("login").style.display =
 "none";
 
 document.getElementById("system").style.display =
 "block";
-
 
 await showAllCases();
 
@@ -694,7 +560,6 @@ document.getElementById("loginMessage").innerText =
 
 }
 
-
 /* LOAD CASES */
 
 async function showAllCases() {
@@ -705,10 +570,8 @@ BACKEND_URL +
 "/api/cases"
 );
 
-
 const cases =
 await response.json();
-
 
 if (!response.ok) {
 
@@ -716,12 +579,10 @@ document.getElementById("cases").innerHTML =
 "<div class='no-data'>Unable to load cases.</div>";
 
 return;
-
 }
 
-
-allCases = cases.cases || [];
-
+allCases =
+cases.cases || [];
 
 displayCases(allCases);
 
@@ -729,6 +590,133 @@ updateDashboard();
 
 }
 
+/* EXCEL DOWNLOAD */
+
+function downloadLegalMIS() {
+
+if (!allCases || allCases.length === 0) {
+
+alert(
+"No Legal MIS cases are available to download."
+);
+
+return;
+}
+
+if (typeof XLSX === "undefined") {
+
+alert(
+"Excel export library could not be loaded. Please refresh the page and try again."
+);
+
+return;
+}
+
+const excelData =
+allCases.map(function(c, index) {
+
+return {
+
+"Sr. No.": index + 1,
+
+"Branch": c.branch || "",
+
+"Loan No.": c.loan_no || "",
+
+"Disbursement Date": c.disbursement_date || "",
+
+"Lender": c.lender || "",
+
+"First Party": c.first_party || "",
+
+"Second Party": c.second_party || "",
+
+"Case No.": c.case_no || "",
+
+"E-Filing Date": c.e_filing_date || "",
+
+"Filing Date": c.filing_date || "",
+
+"Court Name": c.court_name || "",
+
+"Advocate": c.advocate || "",
+
+"Previous Date": c.previous_date || "",
+
+"Next Hearing Date": c.next_date || "",
+
+"Stage": c.stage || "",
+
+"Current Status": c.current_status || "",
+
+"Act": c.act || "",
+
+"Section": c.section || "",
+
+"CNR Number": c.cnr_number || "",
+
+"eCourts URL": c.ecourts_url || ""
+
+};
+
+});
+
+const worksheet =
+XLSX.utils.json_to_sheet(excelData);
+
+worksheet["!cols"] = [
+
+{ wch: 8 },
+{ wch: 18 },
+{ wch: 16 },
+{ wch: 18 },
+{ wch: 18 },
+{ wch: 28 },
+{ wch: 32 },
+{ wch: 18 },
+{ wch: 18 },
+{ wch: 18 },
+{ wch: 28 },
+{ wch: 24 },
+{ wch: 20 },
+{ wch: 20 },
+{ wch: 22 },
+{ wch: 35 },
+{ wch: 35 },
+{ wch: 45 },
+{ wch: 45 },
+{ wch: 45 }
+
+];
+
+const workbook =
+XLSX.utils.book_new();
+
+XLSX.utils.book_append_sheet(
+workbook,
+worksheet,
+"Legal MIS"
+);
+
+const today =
+new Date();
+
+const dateString =
+today.getFullYear() + "-" +
+String(today.getMonth() + 1).padStart(2,"0") + "-" +
+String(today.getDate()).padStart(2,"0");
+
+const fileName =
+"Pratam_Legal_MIS_" +
+dateString +
+".xlsx";
+
+XLSX.writeFile(
+workbook,
+fileName
+);
+
+}
 
 /* DASHBOARD */
 
@@ -737,11 +725,9 @@ function updateDashboard() {
 const total =
 allCases.length;
 
-
 let open = 0;
 let closed = 0;
 let pending = 0;
-
 
 allCases.forEach(function(c) {
 
@@ -749,7 +735,6 @@ const status =
 String(c.current_status || "")
 .toLowerCase()
 .trim();
-
 
 if (
 status.includes("closed") ||
@@ -760,7 +745,6 @@ status.includes("disposed")
 closed++;
 
 }
-
 else if (
 status.includes("pending")
 ) {
@@ -768,7 +752,6 @@ status.includes("pending")
 pending++;
 
 }
-
 else {
 
 open++;
@@ -776,7 +759,6 @@ open++;
 }
 
 });
-
 
 document.getElementById("totalCases").innerText =
 total;
@@ -790,28 +772,21 @@ closed;
 document.getElementById("pendingCases").innerText =
 pending;
 
-
-/* UPCOMING HEARINGS */
-
 const today =
 new Date();
 
 today.setHours(0,0,0,0);
 
-
 let upcoming = 0;
-
 
 allCases.forEach(function(c) {
 
 if (!c.next_date) return;
 
-
 const date =
 new Date(
 String(c.next_date).substring(0,10)
 );
-
 
 if (
 !isNaN(date.getTime()) &&
@@ -824,39 +799,32 @@ upcoming++;
 
 });
 
-
 document.getElementById("upcomingCases").innerText =
 upcoming;
-
 
 createChart(
 "branchChart",
 countByField("branch")
 );
 
-
 createChart(
 "statusChart",
 countByField("current_status")
 );
-
 
 createChart(
 "stageChart",
 countByField("stage")
 );
 
-
 createChart(
 "advocateChart",
 countByField("advocate")
 );
 
-
 createHearingList();
 
 }
-
 
 /* COUNT DATA */
 
@@ -864,34 +832,26 @@ function countByField(field) {
 
 const counts = {};
 
-
 allCases.forEach(function(c) {
 
 const value =
 String(c[field] || "Not Available")
 .trim();
 
-
 const key =
 value || "Not Available";
 
-
 if (!counts[key]) {
-
 counts[key] = 0;
-
 }
-
 
 counts[key]++;
 
 });
 
-
 return counts;
 
 }
-
 
 /* CREATE BAR CHART */
 
@@ -900,7 +860,6 @@ function createChart(elementId, counts) {
 const container =
 document.getElementById(elementId);
 
-
 const entries =
 Object.entries(counts)
 .sort(function(a,b) {
@@ -908,7 +867,6 @@ Object.entries(counts)
 return b[1] - a[1];
 
 });
-
 
 if (entries.length === 0) {
 
@@ -919,13 +877,10 @@ return;
 
 }
 
-
 const maximum =
 Math.max(...entries.map(x => x[1]));
 
-
 let html = "";
-
 
 entries.forEach(function(item) {
 
@@ -935,20 +890,16 @@ item[0];
 const count =
 item[1];
 
-
 const width =
 maximum > 0
 ? Math.round((count / maximum) * 100)
 : 0;
 
-
 html += `
 
 <div
 class="chart-row"
-onclick="filterByField(
-'${escapeAttribute(name)}'
-)"
+onclick="filterByField('${escapeAttribute(name)}')"
 >
 
 <div class="chart-label">
@@ -968,8 +919,7 @@ ${count}
 <div
 class="chart-bar"
 style="width:${width}%"
->
-</div>
+></div>
 
 </div>
 
@@ -979,12 +929,10 @@ style="width:${width}%"
 
 });
 
-
 container.innerHTML =
 html;
 
 }
-
 
 /* UPCOMING HEARINGS */
 
@@ -993,26 +941,21 @@ function createHearingList() {
 const container =
 document.getElementById("hearingList");
 
-
 const today =
 new Date();
 
 today.setHours(0,0,0,0);
 
-
 const upcoming =
 allCases
-
 .filter(function(c) {
 
 if (!c.next_date) return false;
-
 
 const date =
 new Date(
 String(c.next_date).substring(0,10)
 );
-
 
 return (
 !isNaN(date.getTime()) &&
@@ -1020,16 +963,13 @@ date >= today
 );
 
 })
-
 .sort(function(a,b) {
 
 return new Date(a.next_date) -
 new Date(b.next_date);
 
 })
-
 .slice(0,10);
-
 
 if (upcoming.length === 0) {
 
@@ -1040,9 +980,7 @@ return;
 
 }
 
-
 let html = "";
-
 
 upcoming.forEach(function(c) {
 
@@ -1051,42 +989,26 @@ html += `
 <div class="hearing-item">
 
 <div class="hearing-date">
-
-${escapeHtml(
-formatDate(c.next_date)
-)}
-
+${escapeHtml(formatDate(c.next_date))}
 </div>
 
 <div>
-<strong>
-Loan No.:
-</strong>
-
+<strong>Loan No.:</strong>
 ${escapeHtml(c.loan_no)}
 </div>
 
 <div>
-<strong>
-Party:
-</strong>
-
+<strong>Party:</strong>
 ${escapeHtml(c.second_party)}
 </div>
 
 <div>
-<strong>
-Court:
-</strong>
-
+<strong>Court:</strong>
 ${escapeHtml(c.court_name)}
 </div>
 
 <div>
-<strong>
-Advocate:
-</strong>
-
+<strong>Advocate:</strong>
 ${escapeHtml(c.advocate)}
 </div>
 
@@ -1096,12 +1018,10 @@ ${escapeHtml(c.advocate)}
 
 });
 
-
 container.innerHTML =
 html;
 
 }
-
 
 /* DATE FORMAT */
 
@@ -1109,19 +1029,14 @@ function formatDate(value) {
 
 if (!value) return "";
 
-
 const date =
 new Date(
 String(value).substring(0,10)
 );
 
-
 if (isNaN(date.getTime())) {
-
 return String(value);
-
 }
-
 
 return date.toLocaleDateString(
 "en-IN",
@@ -1134,17 +1049,14 @@ year: "numeric"
 
 }
 
-
 /* DASHBOARD FILTER */
 
 function filterByDashboard(type) {
 
 showCases();
 
-
 let filtered =
 [...allCases];
-
 
 if (type === "open") {
 
@@ -1155,7 +1067,6 @@ const status =
 String(c.current_status || "")
 .toLowerCase();
 
-
 return !status.includes("closed") &&
 !status.includes("dispose") &&
 !status.includes("disposed") &&
@@ -1164,7 +1075,6 @@ return !status.includes("closed") &&
 });
 
 }
-
 
 if (type === "closed") {
 
@@ -1175,7 +1085,6 @@ const status =
 String(c.current_status || "")
 .toLowerCase();
 
-
 return status.includes("closed") ||
 status.includes("dispose") ||
 status.includes("disposed");
@@ -1183,7 +1092,6 @@ status.includes("disposed");
 });
 
 }
-
 
 if (type === "pending") {
 
@@ -1198,49 +1106,34 @@ return String(c.current_status || "")
 
 }
 
-
 displayCases(filtered);
 
 }
 
-
-/* FIELD FILTER FROM CHART */
+/* FIELD FILTER */
 
 function filterByField(value) {
 
 showCases();
 
-
 const searchValue =
-String(value)
-.toLowerCase();
-
+String(value).toLowerCase();
 
 const filtered =
 allCases.filter(function(c) {
 
 return (
-String(c.branch || "")
-.toLowerCase() === searchValue ||
-
-String(c.current_status || "")
-.toLowerCase() === searchValue ||
-
-String(c.stage || "")
-.toLowerCase() === searchValue ||
-
-String(c.advocate || "")
-.toLowerCase() === searchValue
-
+String(c.branch || "").toLowerCase() === searchValue ||
+String(c.current_status || "").toLowerCase() === searchValue ||
+String(c.stage || "").toLowerCase() === searchValue ||
+String(c.advocate || "").toLowerCase() === searchValue
 );
 
 });
 
-
 displayCases(filtered);
 
 }
-
 
 /* UPCOMING HEARINGS */
 
@@ -1248,24 +1141,20 @@ function showUpcomingHearings() {
 
 showCases();
 
-
 const today =
 new Date();
 
 today.setHours(0,0,0,0);
-
 
 const filtered =
 allCases.filter(function(c) {
 
 if (!c.next_date) return false;
 
-
 const date =
 new Date(
 String(c.next_date).substring(0,10)
 );
-
 
 return (
 !isNaN(date.getTime()) &&
@@ -1274,11 +1163,9 @@ date >= today
 
 });
 
-
 displayCases(filtered);
 
 }
-
 
 /* SHOW DASHBOARD */
 
@@ -1294,7 +1181,6 @@ updateDashboard();
 
 }
 
-
 /* SHOW CASES */
 
 function showCases() {
@@ -1306,7 +1192,6 @@ document.getElementById("caseSection").style.display =
 "block";
 
 }
-
 
 /* DISPLAY TABLE */
 
@@ -1321,13 +1206,10 @@ return;
 
 }
 
-
 let html = `
 
 <div class="summary">
-
 Total Cases Found: ${cases.length}
-
 </div>
 
 <div class="table-container">
@@ -1339,35 +1221,20 @@ Total Cases Found: ${cases.length}
 <tr>
 
 <th>Sr. No.</th>
-
 <th>Branch</th>
-
 <th>Loan No.</th>
-
 <th>First Party</th>
-
 <th>Second Party</th>
-
 <th>Case No.</th>
-
 <th>CNR Number</th>
-
 <th>Court Name</th>
-
 <th>Advocate</th>
-
 <th>Previous Date</th>
-
 <th>Next Date</th>
-
 <th>Stage</th>
-
 <th>Current Status</th>
-
 <th>Act</th>
-
 <th>Section</th>
-
 <th>Actions</th>
 
 </tr>
@@ -1376,7 +1243,6 @@ Total Cases Found: ${cases.length}
 
 <tbody>
 `;
-
 
 cases.forEach(function(c,index) {
 
@@ -1438,7 +1304,6 @@ html += `
 
 });
 
-
 html += `
 
 </tbody>
@@ -1446,15 +1311,12 @@ html += `
 </table>
 
 </div>
-
 `;
-
 
 document.getElementById("cases").innerHTML =
 html;
 
 }
-
 
 /* ESCAPE HTML */
 
@@ -1469,9 +1331,7 @@ return "";
 
 }
 
-
 return String(value)
-
 .replace(/&/g,"&amp;")
 .replace(/</g,"&lt;")
 .replace(/>/g,"&gt;")
@@ -1480,15 +1340,11 @@ return String(value)
 
 }
 
-
-/* ESCAPE ATTRIBUTE */
-
 function escapeAttribute(value) {
 
 return escapeHtml(value);
 
 }
-
 
 /* OPEN ECOURTS */
 
@@ -1515,17 +1371,14 @@ decodeURIComponent(advocate);
 const decodedCourtName =
 decodeURIComponent(courtName);
 
-
 let caseType = "";
 let caseNumber = "";
 let caseYear = "";
-
 
 const match =
 decodedCaseNo.match(
 /^([A-Za-z]+)\s*(?:no\.?|number)?\s*\.?\s*(\d+)\s*\/\s*(\d{4})$/i
 );
-
 
 if (match) {
 
@@ -1550,10 +1403,8 @@ return;
 
 }
 
-
 const assistantWindow =
 window.open("", "_blank");
-
 
 if (!assistantWindow) {
 
@@ -1564,7 +1415,6 @@ alert(
 return;
 
 }
-
 
 assistantWindow.document.write(`
 
@@ -1579,89 +1429,54 @@ assistantWindow.document.write(`
 <style>
 
 body {
-
 font-family: Arial, sans-serif;
-
 background: #f4f6f8;
-
 margin: 0;
-
 padding: 30px;
-
 }
 
 .container {
-
 max-width: 700px;
-
 margin: auto;
-
 background: white;
-
 padding: 30px;
-
 border-radius: 10px;
-
 }
 
 h1 {
-
 color: #1f4e78;
-
 }
 
 .case-details {
-
 background: #f1f5f9;
-
 padding: 20px;
-
 border-radius: 8px;
-
 margin-bottom: 20px;
-
 }
 
 .row {
-
 margin-bottom: 12px;
-
 }
 
 .label {
-
 font-weight: bold;
-
 color: #555;
-
 }
 
 button {
-
 background: #1f4e78;
-
 color: white;
-
 border: none;
-
 padding: 12px 20px;
-
 border-radius: 5px;
-
 cursor: pointer;
-
 }
 
 .note {
-
 margin-top: 20px;
-
 padding: 15px;
-
 background: #fff7ed;
-
 border-left: 4px solid #f97316;
-
 }
 
 </style>
@@ -1717,10 +1532,7 @@ ${escapeHtml(decodedAdvocate)}
 'https://services.ecourts.gov.in/ecourtindia_v6/',
 '_blank'
 )">
-
-Open Official eCourts
-
-</button>
+Open Official eCourts </button>
 
 <div class="note">
 
@@ -1732,221 +1544,4 @@ Open Official eCourts
 
 <br><br>
 
-2. Enter the Case Type, Case Number and Registration Year shown above.
-
-<br><br>
-
-3. Enter the CAPTCHA manually.
-
-<br><br>
-
-4. Click Go/Search.
-
-</div>
-
-</div>
-
-</body>
-
-</html>
-
-`);
-
-assistantWindow.document.close();
-
-}
-
-/* UPDATE ECOURTS */
-
-async function updateECourts(id) {
-
-const caseData =
-allCases.find(
-c => String(c.id) === String(id)
-);
-
-if (!caseData) {
-
-alert("Case not found.");
-
-return;
-
-}
-
-if (!caseData.cnr_number) {
-
-alert(
-"CNR number is not available for this case.\n\n" +
-"Please enter the CNR in the Legal MIS first."
-);
-
-return;
-
-}
-
-const cnr =
-String(caseData.cnr_number)
-.trim()
-.toUpperCase();
-
-if (!/^[A-Z0-9]{16}$/.test(cnr)) {
-
-alert(
-"Invalid CNR number.\n\n" +
-"CNR: " + cnr +
-"\n\nA valid CNR must contain exactly 16 letters/numbers."
-);
-
-return;
-
-}
-
-let copied = false;
-
-try {
-
-await navigator.clipboard.writeText(cnr);
-
-copied = true;
-
-}
-catch(error) {
-
-console.log(error);
-
-}
-
-const ecourtsUrl =
-"https://services.ecourts.gov.in/ecourtindia_v6/";
-
-const ecourtsWindow =
-window.open(
-ecourtsUrl,
-"_blank"
-);
-
-if (!ecourtsWindow) {
-
-alert(
-"Please allow pop-ups for the Legal Case Management System."
-);
-
-return;
-
-}
-
-alert(
-
-"eCourts opened.\n\n" +
-
-"CNR: " +
-cnr +
-"\n\n" +
-
-(
-copied
-?
-"The CNR has been copied to your clipboard."
-:
-"Please copy the CNR manually."
-) +
-
-"\n\n" +
-
-"Enter the CNR on eCourts, enter CAPTCHA manually, and click Search."
-
-);
-
-}
-
-/* FILTERS */
-
-function applyFilters() {
-
-let filtered =
-[...allCases];
-
-const searchText =
-document.getElementById("globalSearch")
-.value
-.trim()
-.toLowerCase();
-
-if (searchText) {
-
-filtered =
-filtered.filter(function(row) {
-
-return (
-
-String(row.loan_no || "")
-.toLowerCase()
-.includes(searchText)
-
-||
-
-String(row.first_party || "")
-.toLowerCase()
-.includes(searchText)
-
-||
-
-String(row.second_party || "")
-.toLowerCase()
-.includes(searchText)
-
-||
-
-String(row.case_no || "")
-.toLowerCase()
-.includes(searchText)
-
-||
-
-String(row.cnr_number || "")
-.toLowerCase()
-.includes(searchText)
-
-);
-
-});
-
-}
-
-displayCases(filtered);
-
-}
-
-function clearFilters() {
-
-document.getElementById("globalSearch")
-.value = "";
-
-activeFilters = {};
-
-displayCases(allCases);
-
-}
-
-/* LOGOUT */
-
-function logout() {
-
-localStorage.removeItem("access_token");
-
-document.getElementById("system").style.display =
-"none";
-
-document.getElementById("login").style.display =
-"block";
-
-document.getElementById("cases").innerHTML =
-"";
-
-}
-
-</script>
-
-</body>
-
-</html>
+2. Enter the Case Type, Case Number and Registratio
