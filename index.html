@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -11,6 +12,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     background: #f4f6f8;
+    color: #222;
 }
 
 .header {
@@ -31,19 +33,24 @@ body {
     padding: 20px;
 }
 
-.search-panel {
+/* LOGIN */
+
+#login {
+    width: 350px;
+    margin: 80px auto;
     background: white;
-    padding: 20px;
+    padding: 30px;
     border-radius: 8px;
-    margin-bottom: 20px;
 }
 
-.global-search {
-    width: 350px;
+#login input {
+    width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
 }
+
+/* BUTTONS */
 
 button {
     background: #1f4e78;
@@ -59,6 +66,159 @@ button:hover {
     background: #163a5c;
 }
 
+/* NAVIGATION */
+
+.navigation {
+    background: white;
+    padding: 12px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.nav-button {
+    background: #1f4e78;
+}
+
+.nav-button.active {
+    background: #163a5c;
+}
+
+/* DASHBOARD */
+
+.dashboard {
+    margin-bottom: 25px;
+}
+
+.dashboard-title {
+    margin-bottom: 15px;
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1f4e78;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    cursor: pointer;
+}
+
+.dashboard-card:hover {
+    background: #f8fafc;
+}
+
+.dashboard-card h3 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.dashboard-number {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+/* CHARTS */
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.chart-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.chart-panel h3 {
+    margin-top: 0;
+    color: #1f4e78;
+}
+
+.chart-row {
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.chart-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.chart-bar-background {
+    width: 100%;
+    height: 24px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.chart-bar {
+    height: 24px;
+    background: #1f4e78;
+    border-radius: 4px;
+    min-width: 2px;
+}
+
+.chart-row:hover .chart-bar {
+    background: #163a5c;
+}
+
+/* HEARING */
+
+.hearing-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.hearing-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.hearing-item {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fafafa;
+}
+
+.hearing-date {
+    font-weight: bold;
+    color: #1f4e78;
+}
+
+/* SEARCH */
+
+.search-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.global-search {
+    width: 350px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* SUMMARY */
+
 .summary {
     background: white;
     padding: 15px;
@@ -66,6 +226,8 @@ button:hover {
     border-radius: 6px;
     font-weight: bold;
 }
+
+/* TABLE */
 
 .table-container {
     background: white;
@@ -97,6 +259,8 @@ td {
 tr:hover {
     background: #f1f5f9;
 }
+
+/* FILTER */
 
 .filter-button {
     background: white;
@@ -133,25 +297,34 @@ tr:hover {
     margin: 2px;
 }
 
+/* OTHER */
+
 .no-data {
     background: white;
     padding: 20px;
     text-align: center;
 }
 
-#login {
-    width: 350px;
-    margin: 80px auto;
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
+.hidden {
+    display: none;
 }
 
-#login input {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+
+    .dashboard-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hearing-list {
+        grid-template-columns: 1fr;
+    }
+
 }
 
 </style>
@@ -160,7 +333,6 @@ tr:hover {
 
 <body>
 
-
 <div class="header">
 
 <h1>Pratam Finserv</h1>
@@ -168,7 +340,6 @@ tr:hover {
 <p>Legal Case Management System</p>
 
 </div>
-
 
 <!-- LOGIN -->
 
@@ -180,12 +351,14 @@ tr:hover {
 type="email"
 id="email"
 placeholder="Email"
+
 >
 
 <input
 type="password"
 id="password"
 placeholder="Password"
+
 >
 
 <button onclick="login()">Login</button>
@@ -194,13 +367,199 @@ placeholder="Password"
 
 </div>
 
-
 <!-- SYSTEM -->
 
 <div id="system" style="display:none;">
 
+<!-- NAVIGATION -->
+
+<div class="navigation">
+
+<button
+class="nav-button active"
+onclick="showDashboard()"
+
+>
+
+📊 Dashboard </button>
+
+<button
+class="nav-button"
+onclick="showCases()"
+
+>
+
+📋 All Cases </button>
+
+<button onclick="logout()">
+Logout
+</button>
+
+</div>
+
 <div class="container">
 
+<!-- DASHBOARD -->
+
+<div id="dashboard">
+
+<h2 class="dashboard-title">
+Legal MIS Dashboard
+</h2>
+
+<div class="dashboard-cards">
+
+<div
+class="dashboard-card"
+onclick="filterByDashboard('all')"
+>
+
+<h3>Total Cases</h3>
+
+<div
+class="dashboard-number"
+id="totalCases"
+>
+0
+</div>
+
+</div>
+
+<div
+class="dashboard-card"
+onclick="filterByDashboard('open')"
+>
+
+<h3>Open Cases</h3>
+
+<div
+class="dashboard-number"
+id="openCases"
+>
+0
+</div>
+
+</div>
+
+<div
+class="dashboard-card"
+onclick="filterByDashboard('closed')"
+>
+
+<h3>Closed Cases</h3>
+
+<div
+class="dashboard-number"
+id="closedCases"
+>
+0
+</div>
+
+</div>
+
+<div
+class="dashboard-card"
+onclick="filterByDashboard('pending')"
+>
+
+<h3>Pending Cases</h3>
+
+<div
+class="dashboard-number"
+id="pendingCases"
+>
+0
+</div>
+
+</div>
+
+<div
+class="dashboard-card"
+onclick="showUpcomingHearings()"
+>
+
+<h3>Upcoming Hearings</h3>
+
+<div
+class="dashboard-number"
+id="upcomingCases"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+<!-- CHARTS -->
+
+<div class="charts-grid">
+
+<div class="chart-panel">
+
+<h3>Cases by Branch</h3>
+
+<div id="branchChart">
+Loading...
+</div>
+
+</div>
+
+<div class="chart-panel">
+
+<h3>Cases by Current Status</h3>
+
+<div id="statusChart">
+Loading...
+</div>
+
+</div>
+
+<div class="chart-panel">
+
+<h3>Cases by Stage</h3>
+
+<div id="stageChart">
+Loading...
+</div>
+
+</div>
+
+<div class="chart-panel">
+
+<h3>Cases by Advocate</h3>
+
+<div id="advocateChart">
+Loading...
+</div>
+
+</div>
+
+</div>
+
+<!-- UPCOMING HEARINGS -->
+
+<div class="hearing-panel">
+
+<h3>Upcoming Hearings</h3>
+
+<div
+id="hearingList"
+class="hearing-list"
+>
+Loading...
+</div>
+
+</div>
+
+</div>
+
+<!-- CASES -->
+
+<div
+id="caseSection"
+style="display:none;"
+>
 
 <div class="search-panel">
 
@@ -211,6 +570,7 @@ class="global-search"
 type="text"
 id="globalSearch"
 placeholder="Search Loan No., Party, Case No., CNR..."
+
 >
 
 <button onclick="applyFilters()">
@@ -225,20 +585,15 @@ Clear Filters
 Show All Cases
 </button>
 
-<button onclick="logout()">
-Logout
-</button>
-
 </div>
-
 
 <div id="cases"></div>
 
-
 </div>
 
 </div>
 
+</div>
 
 <script>
 
@@ -260,7 +615,6 @@ let allCases = [];
 let activeFilters = {};
 
 
-
 /* LOGIN */
 
 async function login() {
@@ -271,6 +625,8 @@ document.getElementById("email").value;
 const password =
 document.getElementById("password").value;
 
+
+try {
 
 const response = await fetch(
 
@@ -322,19 +678,26 @@ document.getElementById("system").style.display =
 "block";
 
 
-showAllCases();
+await showAllCases();
+
+showDashboard();
+
+}
+catch(error) {
+
+console.error(error);
+
+document.getElementById("loginMessage").innerText =
+"Unable to connect to Legal MIS.";
 
 }
 
+}
 
 
 /* LOAD CASES */
 
 async function showAllCases() {
-
-const token =
-localStorage.getItem("access_token");
-
 
 const response =
 await fetch(
@@ -357,12 +720,592 @@ return;
 }
 
 
-allCases = cases.cases;
+allCases = cases.cases || [];
+
 
 displayCases(allCases);
 
+updateDashboard();
+
 }
 
+
+/* DASHBOARD */
+
+function updateDashboard() {
+
+const total =
+allCases.length;
+
+
+let open = 0;
+let closed = 0;
+let pending = 0;
+
+
+allCases.forEach(function(c) {
+
+const status =
+String(c.current_status || "")
+.toLowerCase()
+.trim();
+
+
+if (
+status.includes("closed") ||
+status.includes("dispose") ||
+status.includes("disposed")
+) {
+
+closed++;
+
+}
+
+else if (
+status.includes("pending")
+) {
+
+pending++;
+
+}
+
+else {
+
+open++;
+
+}
+
+});
+
+
+document.getElementById("totalCases").innerText =
+total;
+
+document.getElementById("openCases").innerText =
+open;
+
+document.getElementById("closedCases").innerText =
+closed;
+
+document.getElementById("pendingCases").innerText =
+pending;
+
+
+/* UPCOMING HEARINGS */
+
+const today =
+new Date();
+
+today.setHours(0,0,0,0);
+
+
+let upcoming = 0;
+
+
+allCases.forEach(function(c) {
+
+if (!c.next_date) return;
+
+
+const date =
+new Date(
+String(c.next_date).substring(0,10)
+);
+
+
+if (
+!isNaN(date.getTime()) &&
+date >= today
+) {
+
+upcoming++;
+
+}
+
+});
+
+
+document.getElementById("upcomingCases").innerText =
+upcoming;
+
+
+createChart(
+"branchChart",
+countByField("branch")
+);
+
+
+createChart(
+"statusChart",
+countByField("current_status")
+);
+
+
+createChart(
+"stageChart",
+countByField("stage")
+);
+
+
+createChart(
+"advocateChart",
+countByField("advocate")
+);
+
+
+createHearingList();
+
+}
+
+
+/* COUNT DATA */
+
+function countByField(field) {
+
+const counts = {};
+
+
+allCases.forEach(function(c) {
+
+const value =
+String(c[field] || "Not Available")
+.trim();
+
+
+const key =
+value || "Not Available";
+
+
+if (!counts[key]) {
+
+counts[key] = 0;
+
+}
+
+
+counts[key]++;
+
+});
+
+
+return counts;
+
+}
+
+
+/* CREATE BAR CHART */
+
+function createChart(elementId, counts) {
+
+const container =
+document.getElementById(elementId);
+
+
+const entries =
+Object.entries(counts)
+.sort(function(a,b) {
+
+return b[1] - a[1];
+
+});
+
+
+if (entries.length === 0) {
+
+container.innerHTML =
+"<div class='no-data'>No data available.</div>";
+
+return;
+
+}
+
+
+const maximum =
+Math.max(...entries.map(x => x[1]));
+
+
+let html = "";
+
+
+entries.forEach(function(item) {
+
+const name =
+item[0];
+
+const count =
+item[1];
+
+
+const width =
+maximum > 0
+? Math.round((count / maximum) * 100)
+: 0;
+
+
+html += `
+
+<div
+class="chart-row"
+onclick="filterByField(
+'${escapeAttribute(name)}'
+)"
+>
+
+<div class="chart-label">
+
+<span>
+${escapeHtml(name)}
+</span>
+
+<strong>
+${count}
+</strong>
+
+</div>
+
+<div class="chart-bar-background">
+
+<div
+class="chart-bar"
+style="width:${width}%"
+>
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+
+container.innerHTML =
+html;
+
+}
+
+
+/* UPCOMING HEARINGS */
+
+function createHearingList() {
+
+const container =
+document.getElementById("hearingList");
+
+
+const today =
+new Date();
+
+today.setHours(0,0,0,0);
+
+
+const upcoming =
+allCases
+
+.filter(function(c) {
+
+if (!c.next_date) return false;
+
+
+const date =
+new Date(
+String(c.next_date).substring(0,10)
+);
+
+
+return (
+!isNaN(date.getTime()) &&
+date >= today
+);
+
+})
+
+.sort(function(a,b) {
+
+return new Date(a.next_date) -
+new Date(b.next_date);
+
+})
+
+.slice(0,10);
+
+
+if (upcoming.length === 0) {
+
+container.innerHTML =
+"<div class='no-data'>No upcoming hearings recorded.</div>";
+
+return;
+
+}
+
+
+let html = "";
+
+
+upcoming.forEach(function(c) {
+
+html += `
+
+<div class="hearing-item">
+
+<div class="hearing-date">
+
+${escapeHtml(
+formatDate(c.next_date)
+)}
+
+</div>
+
+<div>
+<strong>
+Loan No.:
+</strong>
+
+${escapeHtml(c.loan_no)}
+</div>
+
+<div>
+<strong>
+Party:
+</strong>
+
+${escapeHtml(c.second_party)}
+</div>
+
+<div>
+<strong>
+Court:
+</strong>
+
+${escapeHtml(c.court_name)}
+</div>
+
+<div>
+<strong>
+Advocate:
+</strong>
+
+${escapeHtml(c.advocate)}
+</div>
+
+</div>
+
+`;
+
+});
+
+
+container.innerHTML =
+html;
+
+}
+
+
+/* DATE FORMAT */
+
+function formatDate(value) {
+
+if (!value) return "";
+
+
+const date =
+new Date(
+String(value).substring(0,10)
+);
+
+
+if (isNaN(date.getTime())) {
+
+return String(value);
+
+}
+
+
+return date.toLocaleDateString(
+"en-IN",
+{
+day: "2-digit",
+month: "short",
+year: "numeric"
+}
+);
+
+}
+
+
+/* DASHBOARD FILTER */
+
+function filterByDashboard(type) {
+
+showCases();
+
+
+let filtered =
+[...allCases];
+
+
+if (type === "open") {
+
+filtered =
+filtered.filter(function(c) {
+
+const status =
+String(c.current_status || "")
+.toLowerCase();
+
+
+return !status.includes("closed") &&
+!status.includes("dispose") &&
+!status.includes("disposed") &&
+!status.includes("pending");
+
+});
+
+}
+
+
+if (type === "closed") {
+
+filtered =
+filtered.filter(function(c) {
+
+const status =
+String(c.current_status || "")
+.toLowerCase();
+
+
+return status.includes("closed") ||
+status.includes("dispose") ||
+status.includes("disposed");
+
+});
+
+}
+
+
+if (type === "pending") {
+
+filtered =
+filtered.filter(function(c) {
+
+return String(c.current_status || "")
+.toLowerCase()
+.includes("pending");
+
+});
+
+}
+
+
+displayCases(filtered);
+
+}
+
+
+/* FIELD FILTER FROM CHART */
+
+function filterByField(value) {
+
+showCases();
+
+
+const searchValue =
+String(value)
+.toLowerCase();
+
+
+const filtered =
+allCases.filter(function(c) {
+
+return (
+String(c.branch || "")
+.toLowerCase() === searchValue ||
+
+String(c.current_status || "")
+.toLowerCase() === searchValue ||
+
+String(c.stage || "")
+.toLowerCase() === searchValue ||
+
+String(c.advocate || "")
+.toLowerCase() === searchValue
+
+);
+
+});
+
+
+displayCases(filtered);
+
+}
+
+
+/* UPCOMING HEARINGS */
+
+function showUpcomingHearings() {
+
+showCases();
+
+
+const today =
+new Date();
+
+today.setHours(0,0,0,0);
+
+
+const filtered =
+allCases.filter(function(c) {
+
+if (!c.next_date) return false;
+
+
+const date =
+new Date(
+String(c.next_date).substring(0,10)
+);
+
+
+return (
+!isNaN(date.getTime()) &&
+date >= today
+);
+
+});
+
+
+displayCases(filtered);
+
+}
+
+
+/* SHOW DASHBOARD */
+
+function showDashboard() {
+
+document.getElementById("dashboard").style.display =
+"block";
+
+document.getElementById("caseSection").style.display =
+"none";
+
+updateDashboard();
+
+}
+
+
+/* SHOW CASES */
+
+function showCases() {
+
+document.getElementById("dashboard").style.display =
+"none";
+
+document.getElementById("caseSection").style.display =
+"block";
+
+}
 
 
 /* DISPLAY TABLE */
@@ -395,346 +1338,37 @@ Total Cases Found: ${cases.length}
 
 <tr>
 
-<th>
-Sr. No.
-</th>
+<th>Sr. No.</th>
 
+<th>Branch</th>
 
-<th>
+<th>Loan No.</th>
 
-Branch
+<th>First Party</th>
 
-<button class="filter-button"
-onclick="openFilter('branch')">▼</button>
+<th>Second Party</th>
 
-<div class="filter-menu" id="filter-branch">
+<th>Case No.</th>
 
-<select id="input-branch">
+<th>CNR Number</th>
 
-<option value="">All Branches</option>
+<th>Court Name</th>
 
-${uniqueOptions("branch")}
+<th>Advocate</th>
 
-</select>
+<th>Previous Date</th>
 
-<button onclick="applyColumnFilter('branch')">
-Apply
-</button>
+<th>Next Date</th>
 
-</div>
+<th>Stage</th>
 
-</th>
+<th>Current Status</th>
 
+<th>Act</th>
 
-<th>
+<th>Section</th>
 
-Loan No.
-
-<button class="filter-button"
-onclick="openFilter('loan_no')">▼</button>
-
-<div class="filter-menu" id="filter-loan_no">
-
-<input
-id="input-loan_no"
-placeholder="Search Loan No."
->
-
-<button onclick="applyColumnFilter('loan_no')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-First Party
-
-<button class="filter-button"
-onclick="openFilter('first_party')">▼</button>
-
-<div class="filter-menu" id="filter-first_party">
-
-<input
-id="input-first_party"
-placeholder="Search First Party"
->
-
-<button onclick="applyColumnFilter('first_party')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-Second Party
-
-<button class="filter-button"
-onclick="openFilter('second_party')">▼</button>
-
-<div class="filter-menu" id="filter-second_party">
-
-<input
-id="input-second_party"
-placeholder="Search Second Party"
->
-
-<button onclick="applyColumnFilter('second_party')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-Case No.
-
-<button class="filter-button"
-onclick="openFilter('case_no')">▼</button>
-
-<div class="filter-menu" id="filter-case_no">
-
-<input
-id="input-case_no"
-placeholder="Search Case No."
->
-
-<button onclick="applyColumnFilter('case_no')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-CNR Number
-
-<button class="filter-button"
-onclick="openFilter('cnr_number')">▼</button>
-
-<div class="filter-menu" id="filter-cnr_number">
-
-<input
-id="input-cnr_number"
-placeholder="Search CNR"
->
-
-<button onclick="applyColumnFilter('cnr_number')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-Court Name
-
-<button class="filter-button"
-onclick="openFilter('court_name')">▼</button>
-
-<div class="filter-menu" id="filter-court_name">
-
-<input
-id="input-court_name"
-placeholder="Search Court"
->
-
-<button onclick="applyColumnFilter('court_name')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-Advocate
-
-<button class="filter-button"
-onclick="openFilter('advocate')">▼</button>
-
-<div class="filter-menu" id="filter-advocate">
-
-<input
-id="input-advocate"
-placeholder="Search Advocate"
->
-
-<button onclick="applyColumnFilter('advocate')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-Previous Date
-
-<button class="filter-button"
-onclick="openFilter('previous_date')">▼</button>
-
-<div class="filter-menu" id="filter-previous_date">
-
-<input
-type="date"
-id="input-previous_date"
->
-
-<button onclick="applyColumnFilter('previous_date')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-Next Date
-
-<button class="filter-button"
-onclick="openFilter('next_date')">▼</button>
-
-<div class="filter-menu" id="filter-next_date">
-
-<input
-type="date"
-id="input-next_date"
->
-
-<button onclick="applyColumnFilter('next_date')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-Stage
-
-<button class="filter-button"
-onclick="openFilter('stage')">▼</button>
-
-<div class="filter-menu" id="filter-stage">
-
-<select id="input-stage">
-
-<option value="">All Stages</option>
-
-${uniqueOptions("stage")}
-
-</select>
-
-<button onclick="applyColumnFilter('stage')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-Current Status
-
-<button class="filter-button"
-onclick="openFilter('current_status')">▼</button>
-
-<div class="filter-menu" id="filter-current_status">
-
-<select id="input-current_status">
-
-<option value="">All Status</option>
-
-${uniqueOptions("current_status")}
-
-</select>
-
-<button onclick="applyColumnFilter('current_status')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-Act
-
-<button class="filter-button"
-onclick="openFilter('act')">▼</button>
-
-<div class="filter-menu" id="filter-act">
-
-<input
-id="input-act"
-placeholder="Search Act"
->
-
-<button onclick="applyColumnFilter('act')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-
-Section
-
-<button class="filter-button"
-onclick="openFilter('section')">▼</button>
-
-<div class="filter-menu" id="filter-section">
-
-<input
-id="input-section"
-placeholder="Search Section"
->
-
-<button onclick="applyColumnFilter('section')">
-Apply
-</button>
-
-</div>
-
-</th>
-
-
-<th>
-Actions
-</th>
-
+<th>Actions</th>
 
 </tr>
 
@@ -744,7 +1378,7 @@ Actions
 `;
 
 
-cases.forEach(function(c, index) {
+cases.forEach(function(c,index) {
 
 html += `
 
@@ -754,9 +1388,7 @@ html += `
 
 <td>${escapeHtml(c.branch)}</td>
 
-<td><strong>
-${escapeHtml(c.loan_no)}
-</strong></td>
+<td><strong>${escapeHtml(c.loan_no)}</strong></td>
 
 <td>${escapeHtml(c.first_party)}</td>
 
@@ -772,9 +1404,7 @@ ${escapeHtml(c.loan_no)}
 
 <td>${escapeHtml(c.previous_date)}</td>
 
-<td><strong>
-${escapeHtml(c.next_date)}
-</strong></td>
+<td><strong>${escapeHtml(c.next_date)}</strong></td>
 
 <td>${escapeHtml(c.stage)}</td>
 
@@ -787,17 +1417,17 @@ ${escapeHtml(c.next_date)}
 <td>
 
 <button onclick="openECourts(
-    '${encodeURIComponent(c.case_no || '')}',
-    '${encodeURIComponent(c.first_party || '')}',
-    '${encodeURIComponent(c.second_party || '')}',
-    '${encodeURIComponent(c.advocate || '')}',
-    '${encodeURIComponent(c.court_name || '')}'
+'${encodeURIComponent(c.case_no || '')}',
+'${encodeURIComponent(c.first_party || '')}',
+'${encodeURIComponent(c.second_party || '')}',
+'${encodeURIComponent(c.advocate || '')}',
+'${encodeURIComponent(c.court_name || '')}'
 )">
-    🔎 eCourts
+🔎 eCourts
 </button>
 
-<button onclick="updateECourts('${c.id}')">
-    🔄 Update eCourts
+<button onclick="updateECourts('${escapeAttribute(c.id)}')">
+🔄 Update eCourts
 </button>
 
 </td>
@@ -826,223 +1456,6 @@ html;
 }
 
 
-
-/* UNIQUE OPTIONS */
-
-function uniqueOptions(field) {
-
-const values =
-[...new Set(
-
-allCases
-.map(c => c[field])
-.filter(Boolean)
-
-)]
-
-.sort();
-
-
-return values.map(function(value) {
-
-return `
-<option value="${escapeHtml(value)}">
-${escapeHtml(value)}
-</option>
-`;
-
-}).join("");
-
-}
-
-
-
-/* OPEN FILTER */
-
-function openFilter(field) {
-
-document.querySelectorAll(".filter-menu")
-.forEach(function(menu) {
-
-menu.style.display = "none";
-
-});
-
-
-const menu =
-document.getElementById(
-"filter-" + field
-);
-
-
-if (menu) {
-
-menu.style.display = "block";
-
-}
-
-}
-
-
-
-/* APPLY COLUMN FILTER */
-
-function applyColumnFilter(field) {
-
-const input =
-document.getElementById(
-"input-" + field
-);
-
-
-if (!input) return;
-
-
-activeFilters[field] =
-input.value
-.toLowerCase()
-.trim();
-
-
-applyFilters();
-
-}
-
-
-
-/* APPLY ALL FILTERS */
-
-function applyFilters() {
-
-    let filtered = [...allCases];
-
-    /* GLOBAL SEARCH */
-
-    const searchText =
-        document.getElementById("globalSearch")
-        .value
-        .trim()
-        .toLowerCase();
-
-    if (searchText) {
-
-        filtered = filtered.filter(function(row) {
-
-            return (
-                String(row.loan_no || "")
-                    .toLowerCase()
-                    .includes(searchText)
-
-                ||
-
-                String(row.first_party || "")
-                    .toLowerCase()
-                    .includes(searchText)
-
-                ||
-
-                String(row.second_party || "")
-                    .toLowerCase()
-                    .includes(searchText)
-
-                ||
-
-                String(row.case_no || "")
-                    .toLowerCase()
-                    .includes(searchText)
-
-                ||
-
-                String(row.cnr_number || "")
-                    .toLowerCase()
-                    .includes(searchText)
-            );
-
-        });
-
-    }
-
-
-    /* COLUMN FILTERS */
-
-    Object.keys(activeFilters).forEach(function(field) {
-
-        const filterValue =
-            String(activeFilters[field] || "")
-            .trim()
-            .toLowerCase();
-
-        if (!filterValue) {
-            return;
-        }
-
-
-        filtered = filtered.filter(function(row) {
-
-            const caseValue = row[field];
-
-
-            /* EMPTY VALUE */
-
-            if (
-                caseValue === null ||
-                caseValue === undefined
-            ) {
-
-                return false;
-
-            }
-
-
-            /* DATE FILTER */
-
-            if (
-                field === "previous_date" ||
-                field === "next_date"
-            ) {
-
-                const dateValue =
-                    String(caseValue)
-                    .substring(0, 10);
-
-                return dateValue === filterValue;
-
-            }
-
-
-            /* NORMAL FILTER */
-
-            return String(caseValue)
-                .toLowerCase()
-                .includes(filterValue);
-
-        });
-
-    });
-
-
-    /* SHOW FILTERED RESULTS */
-
-    displayCases(filtered);
-
-}
-
-
-
-/* CLEAR FILTERS */
-
-function clearFilters() {
-
-activeFilters = {};
-
-document.getElementById("globalSearch").value = "";
-
-displayCases(allCases);
-
-}
-
-
-
 /* ESCAPE HTML */
 
 function escapeHtml(value) {
@@ -1056,80 +1469,104 @@ return "";
 
 }
 
+
 return String(value)
 
-.replace(/&/g, "&amp;")
-
-.replace(/</g, "&lt;")
-
-.replace(/>/g, "&gt;")
-
-.replace(/"/g, "&quot;")
-
-.replace(/'/g, "&#039;");
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
 }
 
 
+/* ESCAPE ATTRIBUTE */
+
+function escapeAttribute(value) {
+
+return escapeHtml(value);
+
+}
+
 
 /* OPEN ECOURTS */
 
-function openECourts(caseNo, firstParty, secondParty, advocate, courtName) {
+function openECourts(
+caseNo,
+firstParty,
+secondParty,
+advocate,
+courtName
+) {
 
-    const decodedCaseNo = decodeURIComponent(caseNo);
-    const decodedFirstParty = decodeURIComponent(firstParty);
-    const decodedSecondParty = decodeURIComponent(secondParty);
-    const decodedAdvocate = decodeURIComponent(advocate);
-    const decodedCourtName = decodeURIComponent(courtName);
+const decodedCaseNo =
+decodeURIComponent(caseNo);
 
-    let caseType = "";
-    let caseNumber = "";
-    let caseYear = "";
+const decodedFirstParty =
+decodeURIComponent(firstParty);
 
-    /*
-     * Example:
-     * SCC no.90757/2024
-     *
-     * Case Type = SCC
-     * Case Number = 90757
-     * Year = 2024
-     */
+const decodedSecondParty =
+decodeURIComponent(secondParty);
 
-    const match = decodedCaseNo.match(
-        /^([A-Za-z]+)\s*(?:no\.?|number)?\s*\.?\s*(\d+)\s*\/\s*(\d{4})$/i
-    );
+const decodedAdvocate =
+decodeURIComponent(advocate);
 
-    if (match) {
-
-        caseType = match[1].toUpperCase();
-        caseNumber = match[2];
-        caseYear = match[3];
-
-    } else {
-
-        alert(
-            "Unable to automatically identify Case Type, Case Number and Year from:\n\n" +
-            decodedCaseNo +
-            "\n\nPlease check the Case No. format in the Legal MIS."
-        );
-
-        return;
-    }
+const decodedCourtName =
+decodeURIComponent(courtName);
 
 
-    const assistantWindow = window.open("", "_blank");
-
-    if (!assistantWindow) {
-
-        alert(
-            "Please allow pop-ups for the Legal Case Management System."
-        );
-
-        return;
-    }
+let caseType = "";
+let caseNumber = "";
+let caseYear = "";
 
 
-    assistantWindow.document.write(`
+const match =
+decodedCaseNo.match(
+/^([A-Za-z]+)\s*(?:no\.?|number)?\s*\.?\s*(\d+)\s*\/\s*(\d{4})$/i
+);
+
+
+if (match) {
+
+caseType =
+match[1].toUpperCase();
+
+caseNumber =
+match[2];
+
+caseYear =
+match[3];
+
+}
+else {
+
+alert(
+"Unable to automatically identify Case Type, Case Number and Year from:\n\n" +
+decodedCaseNo
+);
+
+return;
+
+}
+
+
+const assistantWindow =
+window.open("", "_blank");
+
+
+if (!assistantWindow) {
+
+alert(
+"Please allow pop-ups for the Legal Case Management System."
+);
+
+return;
+
+}
+
+
+assistantWindow.document.write(`
 
 <!DOCTYPE html>
 
@@ -1143,105 +1580,87 @@ function openECourts(caseNo, firstParty, secondParty, advocate, courtName) {
 
 body {
 
-    font-family: Arial, sans-serif;
+font-family: Arial, sans-serif;
 
-    background: #f4f6f8;
+background: #f4f6f8;
 
-    margin: 0;
+margin: 0;
 
-    padding: 30px;
+padding: 30px;
 
 }
 
 .container {
 
-    max-width: 700px;
+max-width: 700px;
 
-    margin: auto;
+margin: auto;
 
-    background: white;
+background: white;
 
-    padding: 30px;
+padding: 30px;
 
-    border-radius: 10px;
-
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+border-radius: 10px;
 
 }
 
 h1 {
 
-    color: #1f4e78;
-
-    margin-top: 0;
+color: #1f4e78;
 
 }
 
 .case-details {
 
-    background: #f1f5f9;
+background: #f1f5f9;
 
-    padding: 20px;
+padding: 20px;
 
-    border-radius: 8px;
+border-radius: 8px;
 
-    margin-bottom: 20px;
+margin-bottom: 20px;
 
 }
 
 .row {
 
-    margin-bottom: 12px;
+margin-bottom: 12px;
 
 }
 
 .label {
 
-    font-weight: bold;
+font-weight: bold;
 
-    color: #555;
-
-}
-
-.value {
-
-    color: #111;
+color: #555;
 
 }
 
 button {
 
-    background: #1f4e78;
+background: #1f4e78;
 
-    color: white;
+color: white;
 
-    border: none;
+border: none;
 
-    padding: 12px 20px;
+padding: 12px 20px;
 
-    border-radius: 5px;
+border-radius: 5px;
 
-    cursor: pointer;
-
-    font-size: 15px;
-
-}
-
-button:hover {
-
-    background: #163a5c;
+cursor: pointer;
 
 }
 
 .note {
 
-    margin-top: 20px;
+margin-top: 20px;
 
-    padding: 15px;
+padding: 15px;
 
-    background: #fff7ed;
+background: #fff7ed;
 
-    border-left: 4px solid #f97316;
+border-left: 4px solid #f97316;
 
 }
 
@@ -1249,111 +1668,50 @@ button:hover {
 
 </head>
 
-
 <body>
-
 
 <div class="container">
 
 <h1>eCourts Search Assistant</h1>
 
-
 <div class="case-details">
 
-
 <div class="row">
-
-<span class="label">
-Case Type:
-</span>
-
-<span class="value">
-${caseType}
-</span>
-
+<span class="label">Case Type:</span>
+${escapeHtml(caseType)}
 </div>
 
-
 <div class="row">
-
-<span class="label">
-Case Number:
-</span>
-
-<span class="value">
-${caseNumber}
-</span>
-
+<span class="label">Case Number:</span>
+${escapeHtml(caseNumber)}
 </div>
 
-
 <div class="row">
-
-<span class="label">
-Registration Year:
-</span>
-
-<span class="value">
-${caseYear}
-</span>
-
+<span class="label">Registration Year:</span>
+${escapeHtml(caseYear)}
 </div>
 
-
 <div class="row">
-
-<span class="label">
-Court:
-</span>
-
-<span class="value">
+<span class="label">Court:</span>
 ${escapeHtml(decodedCourtName)}
-</span>
-
 </div>
 
-
 <div class="row">
-
-<span class="label">
-First Party:
-</span>
-
-<span class="value">
+<span class="label">First Party:</span>
 ${escapeHtml(decodedFirstParty)}
-</span>
-
 </div>
 
-
 <div class="row">
-
-<span class="label">
-Second Party:
-</span>
-
-<span class="value">
+<span class="label">Second Party:</span>
 ${escapeHtml(decodedSecondParty)}
-</span>
-
 </div>
-
 
 <div class="row">
-
-<span class="label">
-Advocate:
-</span>
-
-<span class="value">
+<span class="label">Advocate:</span>
 ${escapeHtml(decodedAdvocate)}
-</span>
-
 </div>
 
-
 </div>
-
 
 <button onclick="window.open(
 'https://services.ecourts.gov.in/ecourtindia_v6/',
@@ -1364,36 +1722,29 @@ Open Official eCourts
 
 </button>
 
-
 <div class="note">
 
-<strong>Instructions:</strong>
+<strong>Instructions</strong>
 
 <br><br>
 
-1. Click <strong>Open Official eCourts</strong>.
+1. Select Case Number under Case Status.
 
 <br><br>
 
-2. Select <strong>Case Number</strong> under Case Status.
+2. Enter the Case Type, Case Number and Registration Year shown above.
 
 <br><br>
 
-3. Enter the Case Type, Case Number and Registration Year shown above.
+3. Enter the CAPTCHA manually.
 
 <br><br>
 
-4. Enter the CAPTCHA manually.
-
-<br><br>
-
-5. Click <strong>Go</strong> on eCourts.
+4. Click Go/Search.
 
 </div>
 
-
 </div>
-
 
 </body>
 
@@ -1401,146 +1752,181 @@ Open Official eCourts
 
 `);
 
-    assistantWindow.document.close();
+assistantWindow.document.close();
 
 }
-
-
 
 /* UPDATE ECOURTS */
 
 async function updateECourts(id) {
 
-    const caseData = allCases.find(
-        c => String(c.id) === String(id)
-    );
+const caseData =
+allCases.find(
+c => String(c.id) === String(id)
+);
 
-    if (!caseData) {
+if (!caseData) {
 
-        alert("Case not found.");
+alert("Case not found.");
 
-        return;
-    }
+return;
 
-    if (!caseData.cnr_number) {
-
-        alert(
-            "CNR number is not available for this case.\n\n" +
-            "Please enter the CNR in the Legal MIS first."
-        );
-
-        return;
-    }
-
-    const cnr = String(caseData.cnr_number)
-        .trim()
-        .toUpperCase();
-
-    /*
-     * Validate CNR
-     */
-
-    if (!/^[A-Z0-9]{16}$/.test(cnr)) {
-
-        alert(
-            "Invalid CNR number.\n\n" +
-            "CNR: " + cnr +
-            "\n\n" +
-            "A valid CNR must contain exactly 16 letters/numbers."
-        );
-
-        return;
-    }
-
-    /*
-     * Copy CNR to clipboard
-     */
-
-    let copied = false;
-
-    try {
-
-        await navigator.clipboard.writeText(cnr);
-
-        copied = true;
-
-    } catch (error) {
-
-        console.log(
-            "Clipboard copy was not available:",
-            error
-        );
-
-        copied = false;
-    }
-
-    /*
-     * Open official eCourts
-     */
-
-    const ecourtsUrl =
-        "https://services.ecourts.gov.in/ecourtindia_v6/";
-
-    const ecourtsWindow =
-        window.open(
-            ecourtsUrl,
-            "_blank"
-        );
-
-    /*
-     * Pop-up blocked
-     */
-
-    if (!ecourtsWindow) {
-
-        alert(
-            "Please allow pop-ups for the Legal Case Management System."
-        );
-
-        return;
-    }
-
-    /*
-     * Show instructions
-     */
-
-    if (copied) {
-
-        alert(
-            "eCourts opened successfully.\n\n" +
-
-            "CNR:\n" +
-            cnr +
-            "\n\n" +
-
-            "The CNR has been copied to your clipboard.\n\n" +
-
-            "On eCourts:\n" +
-            "1. Open CNR Number search.\n" +
-            "2. Paste the CNR.\n" +
-            "3. Enter the CAPTCHA manually.\n" +
-            "4. Click Search.\n\n" +
-
-            "CAPTCHA is intentionally left manual."
-        );
-
-    } else {
-
-        alert(
-            "eCourts opened successfully.\n\n" +
-
-            "CNR:\n" +
-            cnr +
-            "\n\n" +
-
-            "Please copy the CNR above and enter it on the eCourts CNR search page.\n\n" +
-
-            "Then enter the CAPTCHA manually and click Search."
-        );
-    }
 }
 
+if (!caseData.cnr_number) {
 
+alert(
+"CNR number is not available for this case.\n\n" +
+"Please enter the CNR in the Legal MIS first."
+);
+
+return;
+
+}
+
+const cnr =
+String(caseData.cnr_number)
+.trim()
+.toUpperCase();
+
+if (!/^[A-Z0-9]{16}$/.test(cnr)) {
+
+alert(
+"Invalid CNR number.\n\n" +
+"CNR: " + cnr +
+"\n\nA valid CNR must contain exactly 16 letters/numbers."
+);
+
+return;
+
+}
+
+let copied = false;
+
+try {
+
+await navigator.clipboard.writeText(cnr);
+
+copied = true;
+
+}
+catch(error) {
+
+console.log(error);
+
+}
+
+const ecourtsUrl =
+"https://services.ecourts.gov.in/ecourtindia_v6/";
+
+const ecourtsWindow =
+window.open(
+ecourtsUrl,
+"_blank"
+);
+
+if (!ecourtsWindow) {
+
+alert(
+"Please allow pop-ups for the Legal Case Management System."
+);
+
+return;
+
+}
+
+alert(
+
+"eCourts opened.\n\n" +
+
+"CNR: " +
+cnr +
+"\n\n" +
+
+(
+copied
+?
+"The CNR has been copied to your clipboard."
+:
+"Please copy the CNR manually."
+) +
+
+"\n\n" +
+
+"Enter the CNR on eCourts, enter CAPTCHA manually, and click Search."
+
+);
+
+}
+
+/* FILTERS */
+
+function applyFilters() {
+
+let filtered =
+[...allCases];
+
+const searchText =
+document.getElementById("globalSearch")
+.value
+.trim()
+.toLowerCase();
+
+if (searchText) {
+
+filtered =
+filtered.filter(function(row) {
+
+return (
+
+String(row.loan_no || "")
+.toLowerCase()
+.includes(searchText)
+
+||
+
+String(row.first_party || "")
+.toLowerCase()
+.includes(searchText)
+
+||
+
+String(row.second_party || "")
+.toLowerCase()
+.includes(searchText)
+
+||
+
+String(row.case_no || "")
+.toLowerCase()
+.includes(searchText)
+
+||
+
+String(row.cnr_number || "")
+.toLowerCase()
+.includes(searchText)
+
+);
+
+});
+
+}
+
+displayCases(filtered);
+
+}
+
+function clearFilters() {
+
+document.getElementById("globalSearch")
+.value = "";
+
+activeFilters = {};
+
+displayCases(allCases);
+
+}
 
 /* LOGOUT */
 
@@ -1558,7 +1944,6 @@ document.getElementById("cases").innerHTML =
 "";
 
 }
-
 
 </script>
 
