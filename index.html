@@ -3,7 +3,12 @@
 <html>
 <head>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1f4e78">    
+<meta name="theme-color" content="#1f4e78">  
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./service-worker.js");
+}
+</script>
 <title>Pratam Legal Case Management System</title>
 
 <!-- Excel Export Library -->
