@@ -1,0 +1,10 @@
+{
+  "name": "Pratam Legal MIS",
+  "short_name": "Pratam Legal MIS",
+  "description": "Pratam Finserv Legal Case Management System",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#1f4e78",
+  "orientation": "landscape"
+}
